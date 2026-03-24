@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f6eee4;
+  --foreground: #2d211b;
+  --muted-foreground: #6f5d51;
+  --accent: #dc6c24;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background:
+    linear-gradient(rgba(247, 239, 230, 0.78), rgba(247, 239, 230, 0.82)),
+    url('/images/paper-texture.png'),
+    radial-gradient(circle at 10% 12%, rgba(220, 108, 36, 0.12), transparent 24%),
+    radial-gradient(circle at 84% 14%, rgba(214, 179, 130, 0.12), transparent 22%),
+    radial-gradient(circle at 22% 82%, rgba(198, 158, 150, 0.10), transparent 20%),
+    radial-gradient(circle at 82% 78%, rgba(163, 179, 158, 0.09), transparent 18%),
+    linear-gradient(180deg, #f7efe6 0%, #f4ece3 40%, #f6f0e8 100%);
+  background-repeat: no-repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-size: auto, 700px 700px, auto, auto, auto, auto, auto;
+  background-attachment: fixed, fixed, scroll, scroll, scroll, scroll, scroll;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.14;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255,255,255,0.28), transparent 16%),
+    radial-gradient(circle at 78% 26%, rgba(255,255,255,0.22), transparent 14%),
+    radial-gradient(circle at 32% 74%, rgba(255,255,255,0.18), transparent 12%);
+  mix-blend-mode: soft-light;
+}
+
+::selection {
+  background: rgba(220, 108, 36, 0.18);
+}
