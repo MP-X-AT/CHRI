@@ -157,10 +157,92 @@ export const enContent: SiteContent = {
 
   publikationen: {
     eyebrow: 'Publications',
-    title: 'Texts and contributions',
+    title: 'Selected publications and contributions',
     intro:
-      'A selection of publications, talks and professional contributions.',
-    items: [],
+      'A selection of publications on psychodrama, body work, trauma, gender roles, prevention and social participation. These contributions connect professional reflection, practical experience and a sensitive perspective on relationship, development and social reality.',
+    items: [
+      {
+        featured: true,
+        title: 'Body politics – an exercise in body relationship',
+        subtitle: 'Journal of Psychodrama and Sociometry · 2023',
+        year: '2023',
+        href: 'https://link.springer.com/epdf/10.1007/s11620-023-00721-z?sharing_token=vEQWvODRtKrDLnGWfcsWove4RwlQNchNByi7wbcMAY7_2VLMbbcxVEsDvFX8B5146HDaKlmaiTVnx7X0Q_Mo_ejJYL0H1Ovtp_Ko4hP3ZHnTuPl2qTmBJRb9gR04BGyMpHMMHY3MXpIZ_t5Ry2PKdMhEjh-Dvp3pkwb3kCIBfuo%3D',
+        summary:
+          'This publication shows how an exercise focused on the relationship to one’s own body can open a sensitive path into body-related topics. It centres on perception, body awareness and psychodramatic work with girls and women in individual and group settings.',
+        tags: ['Body work', 'Psychodrama', 'Relationship', 'Prevention'],
+        ctaLabel: 'Open publication',
+      },
+      {
+        title:
+          'Virtual sociodrama: Building collective creative resilience in the liminality of Covid-19 pandemic',
+        subtitle: 'Journal of Psychodrama and Sociometry · 2022',
+        year: '2022',
+        href: 'https://link.springer.com/article/10.1007/s11620-022-00693-6',
+        summary:
+          'This article explores how virtual sociodrama can strengthen collective creativity and resilience in times of social uncertainty. It focuses on transitional experiences during the pandemic and on processing social and emotional strain together.',
+        tags: ['Sociodrama', 'Covid-19', 'Resilience', 'Group'],
+        ctaLabel: 'Open publication',
+      },
+      {
+        title:
+          'Intercultural competence in working with traumatised people with refugee experience',
+        subtitle: 'Journal of Psychodrama and Sociometry · 2021',
+        year: '2021',
+        href: 'https://link.springer.com/epdf/10.1007/s11620-021-00627-8?sharing_token=OB0Vv6wyZ-36VZ1rMDJv_fe4RwlQNchNByi7wbcMAY7boqzoBWQCg9GGPERUnYcehh8aIEYfhoMnf4viB-qX_O4LYBj7YwJUeK_QrqJ1MtE02CXK0mJrqd7MFbJJUfLhi4yHTffQPume9g4Dyd-raWXM1VlhOk-pZ0JRPx2sC40%3D',
+        summary:
+          'This contribution addresses the question of which intercultural competencies are needed in psychotherapeutic and psychosocial work with traumatised people who have refugee experience. It highlights sensitivity to life realities, contextual understanding and sustainable relationship building.',
+        tags: ['Trauma', 'Refugee experience', 'Interculturality', 'Psychotherapy'],
+        ctaLabel: 'Open publication',
+      },
+      {
+        title:
+          'When am I right? Prevention of eating disorders. When am I appropriate?',
+        subtitle: 'Journal of Psychodrama and Sociometry · 2018',
+        year: '2018',
+        href: 'https://link.springer.com/article/10.1007/s11620-018-0464-7',
+        summary:
+          'This publication addresses the prevention of eating disorders at the intersection of self-image, body perception and social norms. It opens a reflective space around the question of when young people experience themselves as right, fitting or appropriate.',
+        tags: ['Eating disorders', 'Prevention', 'Youth', 'Body image'],
+        ctaLabel: 'Open publication',
+      },
+      {
+        title: 'Development of gender roles in adolescence',
+        subtitle: 'Journal of Psychodrama and Sociometry · 2016',
+        year: '2016',
+        href: 'https://link.springer.com/article/10.1007/s11620-016-0352-y?wt_mc=Internal.Event.1.SEM.ArticleAuthorAssignedToIssue',
+        summary:
+          'This article focuses on the development of gender roles in adolescence and their relevance for identity, self-understanding and social orientation. It looks at developmental processes shaped by belonging, norms and individual unfolding.',
+        tags: ['Youth', 'Gender roles', 'Identity', 'Development'],
+        ctaLabel: 'Open publication',
+      },
+      {
+        title: 'Shouldn’t the world become better?',
+        subtitle:
+          'Digital media, emancipatory potential and marginalisation · STIMME · 2019',
+        year: '2019',
+        href: 'https://stimme.minderheiten.at/wordpress/wp-content/uploads/sites/3/2019/05/stimme98_web_s08-09.pdf',
+        summary:
+          'This publication reflects on the ambivalence of digital media between emancipatory potential and new forms of marginalisation. It asks how social participation, visibility and mechanisms of exclusion interact in digital spaces.',
+        tags: ['Digital media', 'Marginalisation', 'Participation', 'Society'],
+        ctaLabel: 'Open PDF',
+      },
+      {
+        title:
+          'Dynamics in the relationship of co-dependent and person with dependent personality disorder',
+        subtitle: 'Springer',
+        year: '',
+        href: 'https://link.springer.com/chapter/10.1007/978-3-531-19779-1_8#page-1',
+        summary:
+          'This contribution examines relationship dynamics between co-dependent individuals and people with dependent personality disorder. It focuses on recurring patterns of attachment, responsibility, neediness and boundaries in strained relational systems.',
+        tags: [
+          'Relationship dynamics',
+          'Co-dependency',
+          'Personality disorder',
+          'Psychodynamics',
+        ],
+        ctaLabel: 'Open publication',
+      },
+    ],
   },
 
   kontakt: {

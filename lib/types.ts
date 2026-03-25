@@ -15,6 +15,10 @@ export type PublicationItem = {
   subtitle?: string
   year?: string
   href?: string
+  summary?: string
+  tags?: string[]
+  featured?: boolean
+  ctaLabel?: string
 }
 
 export type SiteContent = {
