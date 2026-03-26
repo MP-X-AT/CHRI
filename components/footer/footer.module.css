@@ -9,32 +9,30 @@
   );
 }
 
-.footer-grid {
+.footerGrid {
   display: grid;
   gap: 2.5rem;
 }
 
 @media (min-width: 768px) {
-  .footer-grid {
+  .footerGrid {
     grid-template-columns: 1.35fr 0.65fr;
     gap: 3rem;
   }
 }
 
-/* LEFT */
-
-.footer-brand {
+.footerBrand {
   padding-right: 1rem;
 }
 
-.footer-name {
+.footerName {
   font-size: 1.5rem;
   font-weight: 300;
   letter-spacing: -0.03em;
   color: rgba(34, 26, 20, 0.96);
 }
 
-.footer-description {
+.footerDescription {
   margin-top: 0.75rem;
   max-width: 30rem;
   font-size: 0.95rem;
@@ -42,14 +40,14 @@
   color: rgba(70, 54, 40, 0.78);
 }
 
-.footer-meta {
+.footerMeta {
   margin-top: 1.25rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-.footer-line {
+.footerLine {
   width: 3rem;
   height: 1px;
   background: linear-gradient(
@@ -59,34 +57,32 @@
   );
 }
 
-.footer-location {
+.footerLocation {
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.22em;
   color: rgba(98, 75, 54, 0.64);
 }
 
-/* RIGHT */
-
-.footer-columns {
+.footerColumns {
   display: grid;
   gap: 1.75rem;
 }
 
 @media (min-width: 640px) {
-  .footer-columns {
+  .footerColumns {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-.footer-label {
+.footerLabel {
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.28em;
   color: rgba(188, 112, 56, 0.92);
 }
 
-.footer-links {
+.footerLinks {
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
@@ -94,26 +90,24 @@
   font-size: 0.95rem;
 }
 
-.footer-link {
+.footerLink {
   color: rgba(34, 26, 20, 0.94);
   transition: color 0.2s ease;
 }
 
-.footer-link:hover {
+.footerLink:hover {
   color: rgba(188, 112, 56, 1);
 }
 
-.footer-link-muted {
+.footerLinkMuted {
   color: rgba(98, 75, 54, 0.72);
 }
 
-.footer-link-muted:hover {
+.footerLinkMuted:hover {
   color: rgba(34, 26, 20, 0.94);
 }
 
-/* BOTTOM */
-
-.footer-bottom {
+.footerBottom {
   margin-top: 1.75rem;
   padding-top: 1rem;
   border-top: 1px solid rgba(110, 86, 62, 0.1);
@@ -125,7 +119,7 @@
 }
 
 @media (min-width: 640px) {
-  .footer-bottom {
+  .footerBottom {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
