@@ -432,11 +432,9 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
               width={globeSize.width}
               height={globeSize.height}
               backgroundColor="rgba(0,0,0,0)"
-              globeMaterial={globeMaterial}
-              globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
-              bumpImageUrl={
-                isMobile ? undefined : '//unpkg.com/three-globe/example/img/earth-topology.png'
-              }
+              globeMaterial={globeMaterial}globeImageUrl="/globe/earth-blue-marble.jpg"
+              bumpImageUrl={isMobile ? undefined : '/globe/earth-topology.png'}
+              
               atmosphereColor="#ffd7ac"
               atmosphereAltitude={isMobile ? 0.22 : 0.28}
               polygonsData={countries}

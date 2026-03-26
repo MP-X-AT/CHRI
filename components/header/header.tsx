@@ -1,12 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import Container from '@/components/ui/container'
 import LocaleSwitcher from '@/components/layout/locale-switcher'
 import type { Locale, NavItem, SiteContent } from '@/lib/types'
 import styles from './header.module.css'
+
+function normalizePath(pathname: string) {
+  if (pathname.length > 1 && pathname.endsWith('/')) {
+    return pathname.slice(0, -1)
+  }
+
+  return pathname
+}
 
 export default function Header({
   locale,
@@ -20,17 +29,34 @@ export default function Header({
   labels: SiteContent['header']
 }) {
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+  const normalizedPathname = normalizePath(pathname)
+
+  useEffect(() => {
+    setOpen(false)
+  }, [normalizedPathname])
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [open])
+
+  const getHref = (item: NavItem) =>
+    item.href ? `/${locale}/${item.href}` : `/${locale}`
+
+  const isActive = (href: string) => normalizePath(href) === normalizedPathname
 
   return (
     <header className={styles.header}>
       <div className={styles.headerGlow} />
+      <div className={styles.headerAura} />
 
       <Container className={styles.headerInner}>
-        <Link
-          href={`/${locale}`}
-          className={styles.brand}
-          onClick={() => setOpen(false)}
-        >
+        <Link href={`/${locale}`} className={styles.brand} onClick={() => setOpen(false)}>
+          <div className={styles.brandMark} />
           <div className={styles.brandText}>
             <span className={styles.brandName}>{site.brandName}</span>
             <span className={styles.brandSubtitle}>{site.brandSubtitle}</span>
@@ -38,18 +64,23 @@ export default function Header({
         </Link>
 
         <div className={styles.desktopControls}>
-          <nav className={styles.desktopNav}>
+          <nav className={styles.desktopNav} aria-label="Primary navigation">
             {nav.map((item) => {
-              const href = item.href ? `/${locale}/${item.href}` : `/${locale}`
+              const href = getHref(item)
+              const active = isActive(href)
 
               return (
                 <Link
                   key={`${item.label}-${item.href}`}
                   href={href}
-                  className={styles.desktopNavLink}
+                  className={`${styles.desktopNavLink} ${
+                    active ? styles.desktopNavLinkActive : ''
+                  }`}
+                  aria-current={active ? 'page' : undefined}
                 >
                   <span className={styles.desktopNavLinkLabel}>{item.label}</span>
                   <span className={styles.desktopNavLinkBg} />
+                  {active ? <span className={styles.desktopNavActiveGlow} /> : null}
                 </Link>
               )
             })}
@@ -65,7 +96,8 @@ export default function Header({
           onClick={() => setOpen((value) => !value)}
           aria-label={open ? labels.closeMenuLabel : labels.openMenuLabel}
           aria-expanded={open}
-          className={styles.mobileToggle}
+          aria-controls="mobile-navigation"
+          className={`${styles.mobileToggle} ${open ? styles.mobileToggleOpen : ''}`}
         >
           <div className={styles.burger}>
             <span
@@ -90,6 +122,7 @@ export default function Header({
       <AnimatePresence initial={false}>
         {open && (
           <motion.div
+            id="mobile-navigation"
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
@@ -98,9 +131,10 @@ export default function Header({
           >
             <Container className={styles.mobilePanelInner}>
               <div className={styles.mobileCard}>
-                <nav className={styles.mobileNav}>
+                <nav className={styles.mobileNav} aria-label="Mobile navigation">
                   {nav.map((item, index) => {
-                    const href = item.href ? `/${locale}/${item.href}` : `/${locale}`
+                    const href = getHref(item)
+                    const active = isActive(href)
 
                     return (
                       <motion.div
@@ -112,10 +146,13 @@ export default function Header({
                         <Link
                           href={href}
                           onClick={() => setOpen(false)}
-                          className={styles.mobileNavLink}
+                          className={`${styles.mobileNavLink} ${
+                            active ? styles.mobileNavLinkActive : ''
+                          }`}
+                          aria-current={active ? 'page' : undefined}
                         >
-                          <span>{item.label}</span>
-                          <span className={styles.mobileNavArrow}>→</span>
+                          <span className={styles.mobileNavLabel}>{item.label}</span>
+                          <span className={styles.mobileNavArrow}>{active ? '●' : '→'}</span>
                         </Link>
                       </motion.div>
                     )

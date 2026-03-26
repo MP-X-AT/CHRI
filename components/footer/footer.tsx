@@ -12,8 +12,8 @@ export default function Footer({
   footer: SiteContent['footer']
   site: SiteContent['site']
 }) {
-  const imprintHref = locale === 'de' ? '/de/impressum' : '/en/imprint'
-  const privacyHref = locale === 'de' ? '/de/datenschutz' : '/en/privacy'
+  const imprintHref = `/${locale}/impressum`
+  const privacyHref = `/${locale}/datenschutz`
 
   return (
     <footer className={styles.footer}>
