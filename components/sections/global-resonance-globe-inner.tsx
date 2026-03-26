@@ -23,6 +23,7 @@ type ArcItem = {
   color: string
   stroke: number
   altitude: number
+  dashInitialGap: number
 }
 
 type PolygonFeature = {
@@ -162,6 +163,16 @@ function findNearestConnections(
     .map((item) => item.node)
 }
 
+function createDashInitialGap(
+  startLat: number,
+  startLng: number,
+  endLat: number,
+  endLng: number
+) {
+  const seed = `${startLat}-${startLng}-${endLat}-${endLng}`
+  return (hashString(seed) % 200) / 100
+}
+
 export default function GlobalResonanceGlobeInner({ content }: Props) {
   const globeRef = useRef<GlobeMethods | undefined>(undefined)
   const globeWrapRef = useRef<HTMLDivElement | null>(null)
@@ -172,6 +183,7 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
   const [isTouchDevice, setIsTouchDevice] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [globeSize, setGlobeSize] = useState({ width: 0, height: 0 })
+  const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -210,17 +222,33 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
       const width = entry.contentRect.width
 
       let height = width * 0.78
-      if (width < 480) height = width * 0.92
-      else if (width < 768) height = width * 0.84
-      else if (width < 1280) height = width * 0.72
+      if (width < 480) height = width * 0.9
+      else if (width < 768) height = width * 0.82
+      else if (width < 1280) height = width * 0.7
 
-      const clampedHeight = Math.max(320, Math.min(height, 760))
+      const clampedHeight = Math.max(320, Math.min(height, 740))
 
       setGlobeSize({
         width,
         height: clampedHeight,
       })
     })
+
+    observer.observe(element)
+
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const element = globeWrapRef.current
+    if (!element) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(Boolean(entry?.isIntersecting))
+      },
+      { threshold: 0.08 }
+    )
 
     observer.observe(element)
 
@@ -234,9 +262,9 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
   const globeMaterial = useMemo(() => {
     const material = new THREE.MeshPhongMaterial()
     material.color = new THREE.Color('#ffffff')
-    material.emissive = new THREE.Color('#fff6ed')
-    material.emissiveIntensity = isMobile ? 0.1 : 0.14
-    material.shininess = isMobile ? 14 : 20
+    material.emissive = new THREE.Color('#fff7ef')
+    material.emissiveIntensity = isMobile ? 0.08 : 0.12
+    material.shininess = isMobile ? 10 : 16
     material.specular = new THREE.Color('#ffffff')
     return material
   }, [isMobile])
@@ -245,22 +273,23 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
     if (!globeRef.current) return
 
     const controls = globeRef.current.controls()
-    controls.autoRotate = !prefersReducedMotion
+    controls.autoRotate = isVisible && !prefersReducedMotion
     controls.autoRotateSpeed = prefersReducedMotion
       ? 0
       : focusedCountry
         ? isMobile
-          ? 0.004
-          : 0.008
+          ? 0.003
+          : 0.007
         : isMobile
-          ? 0.028
-          : 0.095
+          ? 0.018
+          : 0.06
+
     controls.enablePan = false
     controls.enableDamping = true
-    controls.dampingFactor = isMobile ? 0.12 : 0.09
-    controls.rotateSpeed = isMobile ? 0.38 : 0.5
-    controls.minDistance = isMobile ? 200 : 180
-    controls.maxDistance = isMobile ? 440 : 420
+    controls.dampingFactor = isMobile ? 0.14 : 0.1
+    controls.rotateSpeed = isMobile ? 0.34 : 0.46
+    controls.minDistance = isMobile ? 210 : 180
+    controls.maxDistance = isMobile ? 430 : 400
 
     const lights = (globeRef.current.lights?.() ?? []) as LightLike[]
     const directionalLight = lights.find((obj) => obj?.type === 'DirectionalLight')
@@ -268,15 +297,15 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
 
     if (directionalLight?.position) {
       directionalLight.position.set(2, 1.35, 1.25)
-      directionalLight.intensity = isMobile ? 1.8 : 2.2
+      directionalLight.intensity = isMobile ? 1.6 : 2
       directionalLight.color = new THREE.Color('#fff9f1')
     }
 
     if (ambientLight) {
-      ambientLight.intensity = isMobile ? 1.12 : 1.32
+      ambientLight.intensity = isMobile ? 1.04 : 1.22
       ambientLight.color = new THREE.Color('#fffcf7')
     }
-  }, [focusedCountry, isMobile, prefersReducedMotion])
+  }, [focusedCountry, isMobile, isVisible, prefersReducedMotion])
 
   useEffect(() => {
     if (!globeRef.current) return
@@ -284,11 +313,11 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
     if (hoveredCountry && !isTouchDevice) {
       globeRef.current.pointOfView(
         {
-          lat: hoveredCountry.lat + (isMobile ? 3 : 5.8),
-          lng: hoveredCountry.lng - (isMobile ? 6.5 : 11.5),
-          altitude: isMobile ? 1.12 : 0.9,
+          lat: hoveredCountry.lat + (isMobile ? 3 : 5.4),
+          lng: hoveredCountry.lng - (isMobile ? 6.5 : 10.5),
+          altitude: isMobile ? 1.1 : 0.9,
         },
-        prefersReducedMotion ? 0 : 1000
+        prefersReducedMotion ? 0 : 900
       )
       return
     }
@@ -296,11 +325,11 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
     if (activeCountry) {
       globeRef.current.pointOfView(
         {
-          lat: activeCountry.lat + (isMobile ? 2.8 : 4.6),
-          lng: activeCountry.lng - (isMobile ? 5.5 : 9),
-          altitude: isMobile ? 1.14 : 0.96,
+          lat: activeCountry.lat + (isMobile ? 2.6 : 4.4),
+          lng: activeCountry.lng - (isMobile ? 5.2 : 8.6),
+          altitude: isMobile ? 1.12 : 0.95,
         },
-        prefersReducedMotion ? 0 : isMobile ? 900 : 1150
+        prefersReducedMotion ? 0 : isMobile ? 850 : 1050
       )
       return
     }
@@ -309,46 +338,50 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
       {
         lat: 24,
         lng: 30,
-        altitude: isMobile ? 1.32 : 1.18,
+        altitude: isMobile ? 1.28 : 1.14,
       },
-      prefersReducedMotion ? 0 : 1400
+      prefersReducedMotion ? 0 : 1300
     )
   }, [hoveredCountry, activeCountry, isTouchDevice, isMobile, prefersReducedMotion])
 
   const ambientArcs = useMemo(() => {
-    const links = isMobile ? AMBIENT_LINKS.slice(0, 2) : AMBIENT_LINKS
+    if (isMobile) return []
 
-    return links
-      .map(([fromId, toId], index) => {
-        const from = COUNTRY_NODES.find((node) => node.id === fromId)
-        const to = COUNTRY_NODES.find((node) => node.id === toId)
+    return AMBIENT_LINKS.map(([fromId, toId], index) => {
+      const from = COUNTRY_NODES.find((node) => node.id === fromId)
+      const to = COUNTRY_NODES.find((node) => node.id === toId)
 
-        if (!from || !to) return null
+      if (!from || !to) return null
 
-        const colors = [
-          'rgba(255, 184, 120, 0.06)',
-          'rgba(116, 214, 255, 0.06)',
-          'rgba(191, 150, 255, 0.05)',
-          'rgba(103, 233, 197, 0.05)',
-        ]
+      const colors = [
+        'rgba(255, 184, 120, 0.05)',
+        'rgba(116, 214, 255, 0.05)',
+        'rgba(191, 150, 255, 0.045)',
+        'rgba(103, 233, 197, 0.045)',
+      ]
 
-        return {
-          startLat: from.lat,
-          startLng: from.lng,
-          endLat: to.lat,
-          endLng: to.lng,
-          color: colors[index % colors.length],
-          stroke: isMobile ? 0.045 : 0.06,
-          altitude: isMobile ? 0.03 : 0.045,
-        }
-      })
-      .filter(Boolean) as ArcItem[]
+      return {
+        startLat: from.lat,
+        startLng: from.lng,
+        endLat: to.lat,
+        endLng: to.lng,
+        color: colors[index % colors.length],
+        stroke: 0.055,
+        altitude: 0.042,
+        dashInitialGap: createDashInitialGap(
+          from.lat,
+          from.lng,
+          to.lat,
+          to.lng
+        ),
+      }
+    }).filter(Boolean) as ArcItem[]
   }, [isMobile])
 
   const focusArcs = useMemo(() => {
-    if (!focusedCountry) return []
+    if (!focusedCountry || isMobile) return []
 
-    return findNearestConnections(focusedCountry, COUNTRY_NODES, isMobile ? 2 : 3).map(
+    return findNearestConnections(focusedCountry, COUNTRY_NODES, 3).map(
       (node, index) => ({
         startLat: focusedCountry.lat,
         startLng: focusedCountry.lng,
@@ -356,25 +389,34 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
         endLng: node.lng,
         color:
           index % 3 === 0
-            ? 'rgba(255, 184, 120, 0.17)'
+            ? 'rgba(255, 184, 120, 0.15)'
             : index % 3 === 1
-              ? 'rgba(116, 214, 255, 0.16)'
-              : 'rgba(191, 150, 255, 0.14)',
-        stroke: isMobile ? 0.1 : 0.12,
-        altitude: isMobile ? 0.045 : 0.055,
+              ? 'rgba(116, 214, 255, 0.14)'
+              : 'rgba(191, 150, 255, 0.13)',
+        stroke: 0.11,
+        altitude: 0.052,
+        dashInitialGap: createDashInitialGap(
+          focusedCountry.lat,
+          focusedCountry.lng,
+          node.lat,
+          node.lng
+        ),
       })
     )
   }, [focusedCountry, isMobile])
 
-  const allArcs = isMobile ? focusArcs : [...ambientArcs, ...focusArcs]
+  const allArcs = useMemo(
+    () => [...ambientArcs, ...focusArcs],
+    [ambientArcs, focusArcs]
+  )
 
   const htmlNodes = useMemo<HtmlNode[]>(() => {
-    const showInlineLabels = !isTouchDevice
+    if (isMobile) return []
 
     const baseNodes: HtmlNode[] = COUNTRY_NODES.map((node) => ({
       ...node,
       kind: 'country',
-      isHovered: showInlineLabels && hoveredCountry?.id === node.id,
+      isHovered: hoveredCountry?.id === node.id,
       isActive: activeCountry?.id === node.id,
       glowClass: glowClassForCountry(node.id),
       pulseDuration: pulseDurationForCountry(node.id),
@@ -382,7 +424,7 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
       labelSize: labelSizeForCountry(node.size),
     }))
 
-    if (focusedCountry && !isMobile) {
+    if (focusedCountry) {
       baseNodes.unshift({
         ...focusedCountry,
         kind: 'halo',
@@ -390,18 +432,18 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
     }
 
     return baseNodes
-  }, [hoveredCountry, activeCountry, focusedCountry, isTouchDevice, isMobile])
+  }, [hoveredCountry, activeCountry, focusedCountry, isMobile])
 
   const interactionHint = isTouchDevice
     ? content.interactionHintTouch
     : content.interactionHintHover
 
   return (
-    <section className="relative overflow-hidden rounded-[2rem] border border-white/60 bg-[radial-gradient(circle_at_top_left,rgba(255,187,122,0.24),transparent_28%),radial-gradient(circle_at_top_right,rgba(118,196,255,0.22),transparent_26%),radial-gradient(circle_at_bottom,rgba(192,156,255,0.18),transparent_24%),linear-gradient(180deg,#fff2e7_0%,#fbfdff_42%,#f2f8ff_100%)] p-5 shadow-[0_28px_80px_rgba(80,90,120,0.16)] sm:rounded-[2.5rem] sm:p-8 lg:rounded-[3rem] lg:p-12">
+    <section className="relative overflow-hidden rounded-[2.2rem] border border-white/60 bg-[radial-gradient(circle_at_top_left,rgba(255,187,122,0.18),transparent_28%),radial-gradient(circle_at_top_right,rgba(118,196,255,0.16),transparent_26%),radial-gradient(circle_at_bottom,rgba(192,156,255,0.12),transparent_24%),linear-gradient(180deg,#fff3e8_0%,#fbfdff_42%,#f4f8ff_100%)] p-5 shadow-[0_24px_72px_rgba(80,90,120,0.12)] sm:rounded-[2.7rem] sm:p-8 lg:rounded-[3rem] lg:p-10">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-12 top-0 h-56 w-56 rounded-full bg-[rgba(255,170,110,0.18)] blur-3xl sm:h-72 sm:w-72" />
-        <div className="absolute right-[-1rem] top-[8%] h-60 w-60 rounded-full bg-[rgba(120,190,255,0.18)] blur-3xl sm:h-80 sm:w-80" />
-        <div className="absolute bottom-[-4rem] left-[36%] h-56 w-56 rounded-full bg-[rgba(196,175,255,0.16)] blur-3xl sm:h-72 sm:w-72" />
+        <div className="absolute -left-12 top-0 h-52 w-52 rounded-full bg-[rgba(255,170,110,0.16)] blur-3xl sm:h-64 sm:w-64" />
+        <div className="absolute right-[-1rem] top-[8%] h-56 w-56 rounded-full bg-[rgba(120,190,255,0.14)] blur-3xl sm:h-72 sm:w-72" />
+        <div className="absolute bottom-[-4rem] left-[36%] h-52 w-52 rounded-full bg-[rgba(196,175,255,0.12)] blur-3xl sm:h-64 sm:w-64" />
       </div>
 
       <div className="relative z-10 max-w-3xl">
@@ -422,8 +464,8 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
         </p>
       </div>
 
-      <div className="relative z-10 mt-8 overflow-hidden rounded-[1.75rem] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.4),rgba(255,255,255,0.16))] shadow-[inset_0_1px_0_rgba(255,255,255,0.58)] sm:mt-10 sm:rounded-[2.5rem]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.46),transparent_22%),radial-gradient(circle_at_72%_22%,rgba(255,210,155,0.24),transparent_20%),radial-gradient(circle_at_58%_78%,rgba(120,190,255,0.18),transparent_18%)]" />
+      <div className="relative z-10 mt-8 overflow-hidden rounded-[1.75rem] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.34),rgba(255,255,255,0.14))] shadow-[inset_0_1px_0_rgba(255,255,255,0.56)] sm:mt-10 sm:rounded-[2.4rem]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.4),transparent_22%),radial-gradient(circle_at_72%_22%,rgba(255,210,155,0.18),transparent_20%),radial-gradient(circle_at_58%_78%,rgba(120,190,255,0.14),transparent_18%)]" />
 
         <div ref={globeWrapRef} className="relative min-h-[20rem] sm:min-h-[30rem]">
           {globeSize.width > 0 && (
@@ -432,33 +474,35 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
               width={globeSize.width}
               height={globeSize.height}
               backgroundColor="rgba(0,0,0,0)"
-              globeMaterial={globeMaterial}globeImageUrl="/globe/earth-blue-marble.jpg"
+              globeMaterial={globeMaterial}
+              globeImageUrl={isMobile ? undefined : '/globe/earth-blue-marble.jpg'}
               bumpImageUrl={isMobile ? undefined : '/globe/earth-topology.png'}
-              
               atmosphereColor="#ffd7ac"
-              atmosphereAltitude={isMobile ? 0.22 : 0.28}
+              atmosphereAltitude={isMobile ? 0.18 : 0.24}
               polygonsData={countries}
-              polygonCapColor={(featureItem: object) => landColorForFeature(featureItem as PolygonFeature)}
-              polygonSideColor={() => 'rgba(255,255,255,0.08)'}
-              polygonStrokeColor={() => 'rgba(255,255,255,0.2)'}
-              polygonAltitude={() => (isMobile ? 0.005 : 0.007)}
+              polygonCapColor={(featureItem: object) =>
+                landColorForFeature(featureItem as PolygonFeature)
+              }
+              polygonSideColor={() => 'rgba(255,255,255,0.06)'}
+              polygonStrokeColor={() => 'rgba(255,255,255,0.16)'}
+              polygonAltitude={() => (isMobile ? 0.004 : 0.006)}
               pointsData={COUNTRY_NODES}
               pointLat="lat"
               pointLng="lng"
               pointColor={() => 'rgba(255,255,255,0.01)'}
               pointLabel={() => ''}
               polygonLabel={() => ''}
-              pointAltitude={isMobile ? 0.015 : 0.017}
+              pointAltitude={isMobile ? 0.014 : 0.016}
               pointRadius={(item: object) => {
                 const node = item as CountryNode
                 const base = pointHitRadius(node.size)
-                const mobileBoost = isTouchDevice ? 1.22 : 1
+                const touchBoost = isTouchDevice ? 1.18 : 1
                 const isHovered = !isTouchDevice && hoveredCountry?.id === node.id
                 const isActive = activeCountry?.id === node.id
 
-                if (isHovered) return base * 1.62 * mobileBoost
-                if (isActive) return base * 1.4 * mobileBoost
-                return base * mobileBoost
+                if (isHovered) return base * 1.58 * touchBoost
+                if (isActive) return base * 1.34 * touchBoost
+                return base * touchBoost
               }}
               pointsMerge={false}
               onPointHover={(point: object | null) => {
@@ -473,10 +517,14 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
               arcColor={(item: object) => (item as ArcItem).color}
               arcStroke={(item: object) => (item as ArcItem).stroke}
               arcAltitude={(item: object) => (item as ArcItem).altitude}
-              arcDashLength={() => (isMobile ? 0.018 : 0.022)}
-              arcDashGap={() => (isMobile ? 3.2 : 2.8)}
-              arcDashInitialGap={() => Math.random() * 2}
-              arcDashAnimateTime={() => (prefersReducedMotion ? 0 : isMobile ? 18000 : 16000)}
+              arcDashLength={() => 0.02}
+              arcDashGap={() => 3}
+              arcDashInitialGap={(item: object) =>
+                (item as ArcItem).dashInitialGap
+              }
+              arcDashAnimateTime={() =>
+                prefersReducedMotion ? 0 : isMobile ? 0 : 16000
+              }
               htmlElementsData={htmlNodes}
               htmlLat="lat"
               htmlLng="lng"
@@ -496,11 +544,12 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
                   node.isHovered ? styles.isHovered : '',
                   node.isActive ? styles.isActive : '',
                 ].join(' ')
+
                 el.style.setProperty('--pulse-duration', node.pulseDuration)
                 el.style.setProperty('--pulse-delay', node.pulseDelay)
                 el.style.setProperty('--label-size', node.labelSize)
 
-                if (!isTouchDevice && (node.isHovered || node.isActive)) {
+                if (node.isHovered || node.isActive) {
                   const label = document.createElement('div')
                   label.className = styles.countryHoverLabel
                   label.textContent = content.countryLabels[node.id] ?? node.id
@@ -513,11 +562,11 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
           )}
         </div>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(242,248,255,0.9)] via-[rgba(242,248,255,0.34)] to-transparent sm:h-32" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(244,248,255,0.88)] via-[rgba(244,248,255,0.28)] to-transparent sm:h-32" />
       </div>
 
       {isTouchDevice && activeCountry && (
-        <div className="relative z-10 mt-4 rounded-[1.4rem] border border-white/70 bg-white/70 p-4 shadow-[0_16px_50px_rgba(80,90,120,0.10)] backdrop-blur-md sm:hidden">
+        <div className="relative z-10 mt-4 rounded-[1.4rem] border border-white/70 bg-white/72 p-4 shadow-[0_14px_42px_rgba(80,90,120,0.08)] backdrop-blur-md sm:hidden">
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--foreground)]/45">
@@ -534,7 +583,7 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
             <button
               type="button"
               onClick={() => setActiveCountry(null)}
-              className="shrink-0 rounded-full border border-white/70 bg-white/80 px-3 py-1.5 text-xs font-medium text-[var(--foreground)]/75 transition hover:bg-white"
+              className="shrink-0 rounded-full border border-white/70 bg-white/82 px-3 py-1.5 text-xs font-medium text-[var(--foreground)]/75 transition hover:bg-white"
             >
               {content.closeButton}
             </button>
