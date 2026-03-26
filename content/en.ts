@@ -1,58 +1,58 @@
 import type { SiteContent } from '@/lib/types'
 
 export const enContent: SiteContent = {
-  "locale": "en",
-  "meta": {
-    "title": "Christine Pichlhöfer",
-    "description": "Gender-sensitive psychotherapy, counselling, supervision and coaching in Vienna."
+  locale: 'en',
+  meta: {
+    title: 'Christine Pichlhöfer',
+    description:
+      'Gender-sensitive psychotherapy, counselling, supervision and coaching in Vienna.',
   },
-  "site": {
-    "brandName": "Christine Pichlhöfer",
-    "brandSubtitle": "Psychotherapy · Psychodrama",
-    "email": "psychodrama@pichlhoefer.eu",
-    "phone": "0699 / 110 144 83",
-    "phoneHref": "+4369911014483",
-    "practice": "Praxisgemeinschaft Marokkanergasse",
-    "address": [
-      "Marokkanergasse 19/3",
-      "1030 Vienna"
-    ],
-    "linkedinLabel": "LinkedIn",
-    "linkedinHref": "https://at.linkedin.com/in/christine-pichlh%C3%B6fer-87a94bb0",
-    "developerName": "mp-x.at",
-    "developerHref": "https://mp-x.at",
-    "copyright": "© Christine Pichlhöfer"
+  site: {
+    brandName: 'Christine Pichlhöfer',
+    brandSubtitle: 'Psychotherapy · Psychodrama',
+    email: 'psychodrama@pichlhoefer.eu',
+    phone: '0699 / 110 144 83',
+    phoneHref: '+4369911014483',
+    practice: 'Praxisgemeinschaft Marokkanergasse',
+    address: ['Marokkanergasse 19/3', '1030 Vienna'],
+    linkedinLabel: 'LinkedIn',
+    linkedinHref:
+      'https://at.linkedin.com/in/christine-pichlh%C3%B6fer-87a94bb0',
+    developerName: 'mp-x.at',
+    developerHref: 'https://mp-x.at',
+    copyright: '© Christine Pichlhöfer',
   },
-  "header": {
-    "openMenuLabel": "Open menu",
-    "closeMenuLabel": "Close menu"
+  header: {
+    openMenuLabel: 'Open menu',
+    closeMenuLabel: 'Close menu',
   },
-  "nav": [
+  nav: [
     {
-      "label": "Home",
-      "href": ""
+      label: 'Home',
+      href: '',
     },
     {
-      "label": "Services",
-      "href": "services"
+      label: 'Services',
+      href: 'angebot',
     },
     {
-      "label": "Approach",
-      "href": "approach"
+      label: 'Approach',
+      href: 'arbeitsweise',
     },
     {
-      "label": "Experience",
-      "href": "experience"
+      label: 'Experience',
+      href: 'erfahrungen',
     },
     {
-      "label": "Publications",
-      "href": "publications"
+      label: 'Publications',
+      href: 'publikationen',
     },
     {
-      "label": "Contact",
-      "href": "contact"
-    }
+      label: 'Contact',
+      href: 'kontakt',
+    },
   ],
+
   "home": {
     "hero": {
       "kicker": "Psychotherapy in Vienna",
