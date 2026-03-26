@@ -1,9 +1,13 @@
 import './globals.css'
 import type { Metadata } from 'next'
+import { defaultLocale } from '@/lib/i18n'
+import { getContent } from '@/lib/get-content'
+
+const defaultContent = getContent(defaultLocale)
 
 export const metadata: Metadata = {
-  title: 'Christine Pichlhöfer',
-  description: 'Psychotherapie, Beratung, Supervision und Coaching in Wien.',
+  title: defaultContent.meta.title,
+  description: defaultContent.meta.description,
 }
 
 export default function RootLayout({

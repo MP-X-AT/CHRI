@@ -1,0 +1,133 @@
+.footer {
+  margin-top: 4rem;
+  padding: 2rem 0;
+  border-top: 1px solid rgba(110, 86, 62, 0.1);
+  background: linear-gradient(
+    180deg,
+    rgba(248, 243, 237, 0.98) 0%,
+    rgba(243, 236, 229, 0.98) 100%
+  );
+}
+
+.footer-grid {
+  display: grid;
+  gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1.35fr 0.65fr;
+    gap: 3rem;
+  }
+}
+
+/* LEFT */
+
+.footer-brand {
+  padding-right: 1rem;
+}
+
+.footer-name {
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: rgba(34, 26, 20, 0.96);
+}
+
+.footer-description {
+  margin-top: 0.75rem;
+  max-width: 30rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(70, 54, 40, 0.78);
+}
+
+.footer-meta {
+  margin-top: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer-line {
+  width: 3rem;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(191, 139, 98, 0.75),
+    rgba(191, 139, 98, 0.18)
+  );
+}
+
+.footer-location {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: rgba(98, 75, 54, 0.64);
+}
+
+/* RIGHT */
+
+.footer-columns {
+  display: grid;
+  gap: 1.75rem;
+}
+
+@media (min-width: 640px) {
+  .footer-columns {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.footer-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  color: rgba(188, 112, 56, 0.92);
+}
+
+.footer-links {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+}
+
+.footer-link {
+  color: rgba(34, 26, 20, 0.94);
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: rgba(188, 112, 56, 1);
+}
+
+.footer-link-muted {
+  color: rgba(98, 75, 54, 0.72);
+}
+
+.footer-link-muted:hover {
+  color: rgba(34, 26, 20, 0.94);
+}
+
+/* BOTTOM */
+
+.footer-bottom {
+  margin-top: 1.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(110, 86, 62, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  color: rgba(98, 75, 54, 0.62);
+}
+
+@media (min-width: 640px) {
+  .footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

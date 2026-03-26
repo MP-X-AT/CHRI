@@ -21,6 +21,32 @@ export type PublicationItem = {
   ctaLabel?: string
 }
 
+export type ServiceItem = {
+  id: string
+  label: string
+}
+
+export type PanelGroup = {
+  eyebrow: string
+  title: string
+  text: string
+  itemIds: string[]
+  warm?: boolean
+}
+
+export type GlobeContent = {
+  eyebrow: string
+  title: string
+  intro: string
+  interactionHintTouch: string
+  interactionHintHover: string
+  activeFocusLabel: string
+  activeFocusText: string
+  closeButton: string
+  capsules: string[]
+  countryLabels: Record<string, string>
+}
+
 export type SiteContent = {
   locale: Locale
 
@@ -29,42 +55,72 @@ export type SiteContent = {
     description: string
   }
 
+  site: {
+    brandName: string
+    brandSubtitle: string
+    email: string
+    phone: string
+    phoneHref: string
+    practice: string
+    address: string[]
+    linkedinLabel: string
+    linkedinHref: string
+    developerName: string
+    developerHref: string
+    copyright: string
+  }
+
+  header: {
+    openMenuLabel: string
+    closeMenuLabel: string
+  }
+
   nav: NavItem[]
 
   home: {
     hero: {
       kicker: string
       title: string
+      displayTitle: {
+        before: string
+        highlight: string
+        after: string
+      }
       text: string
       primaryCta: string
       secondaryCta: string
+      infoItems: string[]
+      imageAlt: string
     }
-
+    midStage: {
+      eyebrow: string
+      title: string
+      highlights: PreviewCardItem[]
+      sideNote: string
+      bottomLeft: string
+      bottomRight: string
+    }
     servicesPreview: {
       eyebrow: string
       title: string
       intro: string
       items: PreviewCardItem[]
     }
-
     approachPreview: {
       title: string
       text: string
       cta: string
     }
-
     experiencePreview: {
       title: string
       text: string
       cta: string
     }
-
     publicationsPreview: {
       title: string
       text: string
       cta: string
     }
-
     contactPreview: {
       title: string
       text: string
@@ -75,17 +131,26 @@ export type SiteContent = {
   angebot: {
     eyebrow: string
     title: string
+    heroTitle: string
     intro: string
-    items: string[]
+    items: ServiceItem[]
+    panels: PanelGroup[]
     settingTitle: string
     settingText: string
+    noteTitle: string
     refundText: string
+    closingText: string
   }
 
   arbeitsweise: {
     eyebrow: string
     title: string
     intro: string
+    stats: { value: string; label: string }[]
+    imageAlt: string
+    imageKicker: string
+    imageTitle: string
+    badges: { eyebrow: string; text: string }[]
     psychodramaQuote: string
     psychodramaAuthor: string
     psychodramaTitle: string
@@ -93,6 +158,7 @@ export type SiteContent = {
     psychodramaDetails: string[]
     methodInfo: string
     externalLinkLabel: string
+    globe: GlobeContent
   }
 
   erfahrungen: {
@@ -109,6 +175,10 @@ export type SiteContent = {
     title: string
     intro: string
     items: PublicationItem[]
+    emptyText: string
+    featuredLabel: string
+    featuredInfo: string
+    openLabelDefault: string
   }
 
   kontakt: {
@@ -127,8 +197,31 @@ export type SiteContent = {
     email: string
   }
 
-  footer: {
-    imprint: string
-    privacy: string
+  impressum: {
+    eyebrow: string
+    title: string
+    sections: {
+      title: string
+      body: string[]
+    }[]
   }
+
+  privacy: {
+    eyebrow: string
+    title: string
+    sections: {
+      title: string
+      body: string[]
+    }[]
+  }
+
+ footer: {
+  imprint: string
+  privacy: string
+  kicker: string
+  description: string
+  contactLabel: string
+  legalLabel: string
+  developerLabel: string
+}
 }

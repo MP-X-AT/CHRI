@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import type { SiteContent } from '@/lib/types'
 
 const GlobalResonanceGlobeInner = dynamic(
   () => import('./global-resonance-globe-inner'),
@@ -21,4 +22,10 @@ const GlobalResonanceGlobeInner = dynamic(
   }
 )
 
-export default GlobalResonanceGlobeInner
+export default function GlobalResonanceGlobe({
+  content,
+}: {
+  content: SiteContent['arbeitsweise']['globe']
+}) {
+  return <GlobalResonanceGlobeInner content={content} />
+}

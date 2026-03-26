@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import { getContent } from '@/lib/get-content'
 import { isLocale } from '@/lib/i18n'
 import Container from '@/components/ui/container'
-import styles from './impressum.module.css'
+import styles from './datenschutz.module.css'
 
 function ParagraphWithEmail({
   paragraph,
@@ -35,7 +35,7 @@ function ParagraphWithEmail({
   )
 }
 
-export default async function ImpressumPage({
+export default async function DatenschutzPage({
   params,
 }: {
   params: Promise<{ locale: string }>
@@ -47,7 +47,7 @@ export default async function ImpressumPage({
   }
 
   const content = getContent(locale)
-  const page = content.impressum
+  const page = content.privacy
   const email = content.site.email
 
   return (

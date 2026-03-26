@@ -1,0 +1,520 @@
+.section {
+  position: relative;
+  overflow: hidden;
+  padding: 4rem 0;
+}
+
+@media (min-width: 640px) {
+  .section {
+    padding: 5rem 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding: 6rem 0;
+  }
+}
+
+.pageBackground {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+}
+
+.pageGlowLeft {
+  position: absolute;
+  left: -8rem;
+  top: 0;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 9999px;
+  background: rgba(220, 108, 36, 0.1);
+  filter: blur(48px);
+}
+
+.pageGlowRight {
+  position: absolute;
+  right: -6rem;
+  top: 8rem;
+  width: 20rem;
+  height: 20rem;
+  border-radius: 9999px;
+  background: rgba(220, 108, 36, 0.06);
+  filter: blur(48px);
+}
+
+.pageGlowCenter {
+  position: absolute;
+  left: 50%;
+  top: 24rem;
+  width: 18rem;
+  height: 18rem;
+  transform: translateX(-50%);
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.04);
+  filter: blur(48px);
+}
+
+.heroCard {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 2.75rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(255, 248, 243, 0.96)
+  );
+  padding: 2rem 1.5rem;
+  box-shadow: 0 30px 80px rgba(20, 20, 20, 0.08);
+}
+
+@media (min-width: 640px) {
+  .heroCard {
+    padding: 2.5rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heroCard {
+    padding: 3.5rem 3rem;
+  }
+}
+
+.heroDecor {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+
+.heroGlowTopRight {
+  position: absolute;
+  right: -4rem;
+  top: -5rem;
+  width: 14rem;
+  height: 14rem;
+  border-radius: 9999px;
+  background: rgba(220, 108, 36, 0.1);
+  filter: blur(48px);
+}
+
+.heroGlowBottomLeft {
+  position: absolute;
+  left: -4rem;
+  bottom: -6rem;
+  width: 14rem;
+  height: 14rem;
+  border-radius: 9999px;
+  background: rgba(220, 108, 36, 0.08);
+  filter: blur(48px);
+}
+
+.heroRingLeft {
+  position: absolute;
+  left: 8%;
+  top: 18%;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(220, 108, 36, 0.16);
+}
+
+.heroRingRight {
+  position: absolute;
+  right: 10%;
+  top: 20%;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.heroDot {
+  position: absolute;
+  right: 28%;
+  bottom: 16%;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background: rgba(220, 108, 36, 0.12);
+}
+
+.heroGrid {
+  display: grid;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .heroGrid {
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: 3.5rem;
+  }
+}
+
+.heroContent {
+  position: relative;
+}
+
+.eyebrow {
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+}
+
+.title {
+  max-width: 56rem;
+  font-size: 2.25rem;
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .title {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .title {
+    font-size: 3.75rem;
+  }
+}
+
+.intro {
+  margin-top: 1.5rem;
+  max-width: 42rem;
+  font-size: 1.125rem;
+  line-height: 2rem;
+  color: var(--muted-foreground);
+}
+
+@media (min-width: 640px) {
+  .intro {
+    font-size: 1.25rem;
+  }
+}
+
+.statsGrid {
+  margin-top: 2rem;
+  display: grid;
+  max-width: 42rem;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .statsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.stat {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 1rem 1.25rem;
+  box-shadow: 0 12px 30px rgba(20, 20, 20, 0.05);
+  backdrop-filter: blur(8px);
+}
+
+.statValue {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .statValue {
+    font-size: 1.875rem;
+  }
+}
+
+.statLabel {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  color: var(--muted-foreground);
+}
+
+.imageWrap {
+  position: relative;
+}
+
+.imageCard {
+  position: relative;
+  margin: 0 auto;
+  max-width: 28rem;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 0.75rem;
+  box-shadow: 0 24px 70px rgba(20, 20, 20, 0.12);
+  backdrop-filter: blur(8px);
+}
+
+.imageInner {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 1.5rem;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.3),
+    rgba(0, 0, 0, 0.1),
+    transparent
+  );
+}
+
+.imageCaption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1.25rem;
+  color: white;
+}
+
+.imageKicker {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.imageTitle {
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+@media (min-width: 640px) {
+  .imageTitle {
+    font-size: 1.5rem;
+  }
+}
+
+.badgeCard {
+  display: none;
+  position: absolute;
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.75rem 1rem;
+  box-shadow: 0 14px 34px rgba(20, 20, 20, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+@media (min-width: 640px) {
+  .badgeCard {
+    display: block;
+  }
+}
+
+.badgeCardLeft {
+  left: -0.75rem;
+  top: 2rem;
+  border: 1px solid rgba(220, 108, 36, 0.18);
+}
+
+.badgeCardRight {
+  right: 0;
+  bottom: -1rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.badgeEyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+}
+
+.badgeText {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  color: var(--foreground);
+}
+
+.contentGrid {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .contentGrid {
+    grid-template-columns: 0.92fr 1.08fr;
+  }
+}
+
+.quoteCard {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(220, 108, 36, 0.14);
+  border-radius: 2rem;
+  background: linear-gradient(
+    180deg,
+    rgba(220, 108, 36, 0.1),
+    rgba(255, 255, 255, 0.9)
+  );
+  padding: 2rem;
+  box-shadow: 0 20px 50px rgba(220, 108, 36, 0.1);
+}
+
+.quoteMark {
+  pointer-events: none;
+  position: absolute;
+  right: -3rem;
+  top: -3rem;
+  font-size: 10rem;
+  line-height: 1;
+  color: rgba(220, 108, 36, 0.1);
+}
+
+.quoteText {
+  position: relative;
+  z-index: 10;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 2.5rem;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .quoteText {
+    font-size: 1.875rem;
+    line-height: 1.45;
+  }
+}
+
+.quoteAuthor {
+  margin-top: 2rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+}
+
+.detailsCard {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 2rem;
+  box-shadow: 0 20px 60px rgba(20, 20, 20, 0.06);
+  backdrop-filter: blur(8px);
+}
+
+.detailsTopLine {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 0.25rem;
+  background: linear-gradient(
+    to right,
+    var(--accent),
+    rgba(220, 108, 36, 0.25),
+    transparent
+  );
+}
+
+.detailsTitle {
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .detailsTitle {
+    font-size: 1.875rem;
+  }
+}
+
+.detailsIntro {
+  margin-top: 1rem;
+  line-height: 2rem;
+  color: var(--muted-foreground);
+}
+
+.detailsGrid {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.detailCard {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.78);
+  padding: 1.25rem;
+  box-shadow: 0 14px 34px rgba(25, 25, 25, 0.06);
+  backdrop-filter: blur(8px);
+  transition: transform 0.3s ease;
+}
+
+.detailCard:hover {
+  transform: translateY(-0.25rem);
+}
+
+.detailCardTopLine {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 0.25rem;
+  background: linear-gradient(
+    to right,
+    rgba(220, 108, 36, 0.7),
+    rgba(220, 108, 36, 0.2),
+    transparent
+  );
+}
+
+.detailCardInner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.detailCardIndex {
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: rgba(220, 108, 36, 0.1);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.detailCardText {
+  line-height: 2rem;
+  color: var(--muted-foreground);
+}
+
+.globeWrap {
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+}

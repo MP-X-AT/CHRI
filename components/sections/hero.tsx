@@ -5,6 +5,7 @@ import type { Locale } from '@/lib/i18n'
 export default function Hero({
   locale,
   content,
+  email,
 }: {
   locale: Locale
   content: {
@@ -14,6 +15,7 @@ export default function Hero({
     primaryCta: string
     secondaryCta: string
   }
+  email: string
 }) {
   return (
     <section id="top" className="relative overflow-hidden py-24 sm:py-32">
@@ -32,7 +34,7 @@ export default function Hero({
 
           <div className="mt-10 flex flex-wrap gap-4">
             <a
-              href="mailto:office@pichlhoefer.eu"
+              href={`mailto:${email}`}
               className="rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
             >
               {content.primaryCta}

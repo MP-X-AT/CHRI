@@ -1,17 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { deContent } from '@/content/de'
-import { enContent } from '@/content/en'
-import { defaultLocale, isLocale, locales, type Locale } from '@/lib/i18n'
-import Header from '@/components/layout/header'
-import Footer from '@/components/layout/footer'
+import { getContent } from '@/lib/get-content'
+import { defaultLocale, isLocale, locales } from '@/lib/i18n'
+import Header from '@/components/header/header'
+import Footer from '@/components/footer/footer'
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
-}
-
-function getContent(locale: Locale) {
-  return locale === 'de' ? deContent : enContent
 }
 
 export async function generateMetadata({
@@ -38,15 +33,22 @@ export default async function LocaleLayout({
 }>) {
   const { locale } = await params
 
-  if (!isLocale(locale)) notFound()
+  if (!isLocale(locale)) {
+    notFound()
+  }
 
   const content = getContent(locale)
 
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-      <Header locale={locale} nav={content.nav} />
+      <Header
+        locale={locale}
+        nav={content.nav}
+        site={content.site}
+        labels={content.header}
+      />
       <main>{children}</main>
-      <Footer locale={locale} footer={content.footer} />
+      <Footer locale={locale} footer={content.footer} site={content.site} />
     </div>
   )
 }

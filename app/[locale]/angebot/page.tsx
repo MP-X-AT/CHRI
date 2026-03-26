@@ -1,12 +1,57 @@
 import { notFound } from 'next/navigation'
-import { deContent } from '@/content/de'
-import { enContent } from '@/content/en'
+import { getContent } from '@/lib/get-content'
 import { isLocale } from '@/lib/i18n'
-import type { Locale } from '@/lib/types'
 import Container from '@/components/ui/container'
+import styles from './angebot.module.css'
 
-function getContent(locale: Locale) {
-  return locale === 'de' ? deContent : enContent
+function TopicList({ items }: { items: string[] }) {
+  return (
+    <ul className={styles.topicList}>
+      {items.map((item) => (
+        <li key={item} className={styles.topicItem}>
+          <span className={styles.topicDot} />
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function CompactPanel({
+  eyebrow,
+  title,
+  text,
+  items,
+  warm = false,
+}: {
+  eyebrow: string
+  title: string
+  text: string
+  items: string[]
+  warm?: boolean
+}) {
+  return (
+    <article
+      className={`${styles.panel} ${warm ? styles.panelWarm : styles.panelNeutral}`}
+    >
+      <div className={styles.panelGlow}>
+        <div className={styles.panelGlowTop} />
+        <div className={styles.panelGlowBottom} />
+      </div>
+
+      <div className={styles.panelInner}>
+        <p className={styles.panelEyebrow}>{eyebrow}</p>
+
+        <h2 className={styles.panelTitle}>{title}</h2>
+
+        <p className={styles.panelText}>{text}</p>
+
+        <div className={styles.panelTopics}>
+          <TopicList items={items} />
+        </div>
+      </div>
+    </article>
+  )
 }
 
 export default async function AngebotPage({
@@ -16,50 +61,59 @@ export default async function AngebotPage({
 }) {
   const { locale } = await params
 
-  if (!isLocale(locale) || locale !== 'de') notFound()
+  if (!isLocale(locale)) {
+    notFound()
+  }
 
   const content = getContent(locale)
+  const itemMap = Object.fromEntries(
+    content.angebot.items.map((item) => [item.id, item.label]),
+  )
 
   return (
-    <section className="py-24 sm:py-28">
+    <section className={styles.section}>
+      <div className={styles.background}>
+        <div className={styles.backgroundGlowLeft} />
+        <div className={styles.backgroundGlowRight} />
+      </div>
+
       <Container>
-        <div className="max-w-3xl">
-          <p className="mb-4 text-sm uppercase tracking-[0.2em] text-[var(--accent)]">
-            {content.angebot.eyebrow}
-          </p>
+        <div className={styles.inner}>
+          <header className={styles.header}>
+            <p className={styles.eyebrow}>{content.angebot.eyebrow}</p>
 
-          <h1 className="text-4xl font-light tracking-tight sm:text-5xl lg:text-6xl">
-            {content.angebot.title}
-          </h1>
+            <h1 className={styles.title}>{content.angebot.heroTitle}</h1>
 
-          <p className="mt-6 text-lg leading-8 text-[var(--muted-foreground)]">
-            {content.angebot.intro}
-          </p>
-        </div>
+            <p className={styles.intro}>{content.angebot.intro}</p>
+          </header>
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {content.angebot.items.map((item) => (
-            <article
-              key={item}
-              className="rounded-[2rem] border border-black/5 bg-white/70 p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md"
-            >
-              <p className="leading-7 text-[var(--foreground)]">{item}</p>
-            </article>
-          ))}
-        </div>
-
-        <div className="mt-14 grid gap-6 lg:grid-cols-2">
-          <div className="rounded-[2rem] border border-black/5 bg-white/70 p-8 shadow-sm">
-            <p className="text-sm uppercase tracking-[0.2em] text-[var(--accent)]">
-              {content.angebot.settingTitle}
-            </p>
-            <p className="mt-4 text-xl font-medium">{content.angebot.settingText}</p>
+          <div className={styles.panelGrid}>
+            {content.angebot.panels.map((panel) => (
+              <CompactPanel
+                key={panel.title}
+                eyebrow={panel.eyebrow}
+                title={panel.title}
+                text={panel.text}
+                warm={panel.warm}
+                items={panel.itemIds.map((id) => itemMap[id]).filter(Boolean)}
+              />
+            ))}
           </div>
 
-          <div className="rounded-[2rem] border border-[rgba(220,108,36,0.14)] bg-[rgba(220,108,36,0.08)] p-8 shadow-sm">
-            <p className="leading-8 text-[var(--foreground)]">
-              {content.angebot.refundText}
-            </p>
+          <div className={styles.infoGrid}>
+            <div className={styles.settingCard}>
+              <p className={styles.infoLabel}>{content.angebot.settingTitle}</p>
+              <p className={styles.settingText}>{content.angebot.settingText}</p>
+            </div>
+
+            <div className={styles.noteCard}>
+              <p className={styles.infoLabel}>{content.angebot.noteTitle}</p>
+              <p className={styles.noteText}>{content.angebot.refundText}</p>
+            </div>
+          </div>
+
+          <div className={styles.closingWrap}>
+            <p className={styles.closingText}>{content.angebot.closingText}</p>
           </div>
         </div>
       </Container>

@@ -5,6 +5,8 @@ import type { Locale } from '@/lib/i18n'
 export default function PublicationsPreview({
   locale,
   content,
+  linkLabel,
+  emptyText,
 }: {
   locale: Locale
   content: {
@@ -13,6 +15,8 @@ export default function PublicationsPreview({
     intro: string
     items: { title: string; subtitle?: string; year?: string }[]
   }
+  linkLabel: string
+  emptyText: string
 }) {
   return (
     <section id="publikationen" className="py-24">
@@ -31,19 +35,17 @@ export default function PublicationsPreview({
           </div>
 
           <Link
-            href={`/${locale}/publikationen`}
+            href={`/${locale}/${locale === 'de' ? 'publikationen' : 'publications'}`}
             className="text-sm font-medium text-[var(--accent)]"
           >
-            {locale === 'de' ? 'Alle Publikationen ansehen' : 'View all publications'}
+            {linkLabel}
           </Link>
         </div>
 
         <div className="mt-10">
           {content.items.length === 0 ? (
             <div className="rounded-[2rem] border border-dashed border-black/10 p-8 text-[var(--muted-foreground)]">
-              {locale === 'de'
-                ? 'Publikationen werden in Kürze ergänzt.'
-                : 'Publications will be added soon.'}
+              {emptyText}
             </div>
           ) : null}
         </div>
