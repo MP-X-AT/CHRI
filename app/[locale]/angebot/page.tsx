@@ -9,7 +9,7 @@ function TopicList({ items }: { items: string[] }) {
     <ul className={styles.topicList}>
       {items.map((item) => (
         <li key={item} className={styles.topicItem}>
-          <span className={styles.topicDot} />
+          <span className={styles.topicDot} aria-hidden="true" />
           <span>{item}</span>
         </li>
       ))}
@@ -34,16 +34,9 @@ function CompactPanel({
     <article
       className={`${styles.panel} ${warm ? styles.panelWarm : styles.panelNeutral}`}
     >
-      <div className={styles.panelGlow}>
-        <div className={styles.panelGlowTop} />
-        <div className={styles.panelGlowBottom} />
-      </div>
-
       <div className={styles.panelInner}>
         <p className={styles.panelEyebrow}>{eyebrow}</p>
-
         <h2 className={styles.panelTitle}>{title}</h2>
-
         <p className={styles.panelText}>{text}</p>
 
         <div className={styles.panelTopics}>
@@ -81,9 +74,6 @@ export default async function AngebotPage({
         <div className={styles.inner}>
           <header className={styles.header}>
             <p className={styles.eyebrow}>{content.angebot.eyebrow}</p>
-
-            <h1 className={styles.title}>{content.angebot.heroTitle}</h1>
-
             <p className={styles.intro}>{content.angebot.intro}</p>
           </header>
 

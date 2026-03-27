@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import { notFound } from 'next/navigation'
 import { getContent } from '@/lib/get-content'
 import { defaultLocale, isLocale, locales } from '@/lib/i18n'
@@ -41,24 +40,15 @@ export default async function LocaleLayout({
   const content = getContent(locale)
 
   return (
-    <>
-      <Script id="set-document-lang" strategy="beforeInteractive">
-        {`
-          document.documentElement.lang = '${locale}';
-          document.documentElement.setAttribute('dir', 'ltr');
-        `}
-      </Script>
-
-      <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
-        <Header
-          locale={locale}
-          nav={content.nav}
-          site={content.site}
-          labels={content.header}
-        />
-        <main>{children}</main>
-        <Footer locale={locale} footer={content.footer} site={content.site} />
-      </div>
-    </>
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
+      <Header
+        locale={locale}
+        nav={content.nav}
+        site={content.site}
+        labels={content.header}
+      />
+      <main>{children}</main>
+      <Footer locale={locale} footer={content.footer} site={content.site} />
+    </div>
   )
 }

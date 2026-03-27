@@ -29,32 +29,36 @@ export default async function PublicationsPage({
 
   return (
     <section className={styles.section}>
+      <div className={styles.backgroundGlowA} />
+      <div className={styles.backgroundGlowB} />
+
       <Container>
         <div className={styles.inner}>
-          <div className={styles.header}>
+          <header className={styles.header}>
             <p className={styles.eyebrow}>{content.publikationen.eyebrow}</p>
-
-            <h1 className={styles.title}>{content.publikationen.title}</h1>
-
             <p className={styles.intro}>{content.publikationen.intro}</p>
-          </div>
+          </header>
 
           {items.length === 0 ? (
-            <div className={styles.emptyCard}>
+            <div className={styles.emptyState}>
               <p className={styles.emptyText}>{content.publikationen.emptyText}</p>
             </div>
           ) : (
             <>
               {featuredItem ? (
                 <section className={styles.featuredSection}>
-                  <div className={styles.featuredCard}>
-                    <div className={styles.featuredGrid}>
-                      <div>
+                  <div className={styles.featuredFrame}>
+                    <div className={styles.featuredWrap}>
+                      <div className={styles.featuredMain}>
                         <p className={styles.featuredLabel}>
                           {content.publikationen.featuredLabel}
                         </p>
 
-                        <h2 className={styles.featuredTitle}>{featuredItem.title}</h2>
+                        {featuredItem.year ? (
+                          <p className={styles.featuredYear}>{featuredItem.year}</p>
+                        ) : null}
+
+                        <h1 className={styles.featuredTitle}>{featuredItem.title}</h1>
 
                         {featuredItem.subtitle ? (
                           <p className={styles.featuredSubtitle}>
@@ -69,29 +73,19 @@ export default async function PublicationsPage({
                         ) : null}
 
                         {featuredItem.tags?.length ? (
-                          <div className={styles.featuredTags}>
-                            {featuredItem.tags.map((tag) => (
-                              <span key={tag} className={styles.featuredTag}>
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
+                          <p className={styles.featuredMeta}>
+                            {featuredItem.tags.join(' · ')}
+                          </p>
                         ) : null}
                       </div>
 
-                      <div className={styles.featuredSideCard}>
-                        <div>
-                          {featuredItem.year ? (
-                            <p className={styles.featuredYear}>{featuredItem.year}</p>
-                          ) : null}
-
-                          <div className={styles.featuredInfoWrap}>
-                            <p>{content.publikationen.featuredInfo}</p>
-                          </div>
-                        </div>
+                      <aside className={styles.featuredAside}>
+                        <p className={styles.featuredInfoText}>
+                          {content.publikationen.featuredInfo}
+                        </p>
 
                         {featuredItem.href ? (
-                          <div className={styles.featuredCtaWrap}>
+                          <div className={styles.featuredActionWrap}>
                             <a
                               href={featuredItem.href}
                               target="_blank"
@@ -103,53 +97,61 @@ export default async function PublicationsPage({
                             </a>
                           </div>
                         ) : null}
-                      </div>
+                      </aside>
                     </div>
                   </div>
                 </section>
               ) : null}
 
               {remainingItems.length > 0 ? (
-                <section className={styles.cardsSection}>
-                  <div className={styles.cardsGrid}>
+                <section className={styles.listSection}>
+                  <div className={styles.listHeader}>
+                    <p className={styles.listKicker}>
+                      {locale === 'en' ? 'Further publications' : 'Weitere Publikationen'}
+                    </p>
+                  </div>
+
+                  <div className={styles.publicationList}>
                     {remainingItems.map((item) => (
                       <article
                         key={`${item.title}-${item.year ?? ''}`}
-                        className={styles.card}
+                        className={styles.publicationItem}
                       >
-                        <div className={styles.cardBody}>
-                          {item.year ? (
-                            <p className={styles.cardYear}>{item.year}</p>
-                          ) : null}
+                        <div className={styles.publicationContent}>
+                          <div className={styles.publicationTopLine}>
+                            {item.year ? (
+                              <p className={styles.publicationYear}>{item.year}</p>
+                            ) : null}
 
-                          <h2 className={styles.cardTitle}>{item.title}</h2>
+                            {item.tags?.length ? (
+                              <p className={styles.publicationMeta}>
+                                {item.tags.join(' · ')}
+                              </p>
+                            ) : null}
+                          </div>
+
+                          <h2 className={styles.publicationTitle}>{item.title}</h2>
 
                           {item.subtitle ? (
-                            <p className={styles.cardSubtitle}>{item.subtitle}</p>
+                            <p className={styles.publicationSubtitle}>
+                              {item.subtitle}
+                            </p>
                           ) : null}
 
                           {item.summary ? (
-                            <p className={styles.cardSummary}>{item.summary}</p>
-                          ) : null}
-
-                          {item.tags?.length ? (
-                            <div className={styles.cardTags}>
-                              {item.tags.map((tag) => (
-                                <span key={tag} className={styles.cardTag}>
-                                  {tag}
-                                </span>
-                              ))}
-                            </div>
+                            <p className={styles.publicationSummary}>
+                              {item.summary}
+                            </p>
                           ) : null}
                         </div>
 
                         {item.href ? (
-                          <div className={styles.cardCtaWrap}>
+                          <div className={styles.publicationAction}>
                             <a
                               href={item.href}
                               target="_blank"
                               rel="noreferrer"
-                              className={styles.cardCta}
+                              className={styles.publicationLink}
                             >
                               {item.ctaLabel ?? content.publikationen.openLabelDefault}
                             </a>

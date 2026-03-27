@@ -2,10 +2,7 @@
   position: relative;
   overflow: clip;
   padding: 6rem 0 7rem;
-  background:
-    radial-gradient(circle at 0% 0%, rgba(220, 108, 36, 0.12), transparent 28%),
-    radial-gradient(circle at 100% 16%, rgba(220, 108, 36, 0.08), transparent 24%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 248, 244, 0.92));
+  background: linear-gradient(180deg, #f8f4ef 0%, #f4efe9 100%);
 }
 
 @media (min-width: 768px) {
@@ -20,23 +17,67 @@
   }
 }
 
-.hero {
+.backgroundGlowA,
+.backgroundGlowB {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  filter: blur(18px);
+}
+
+.backgroundGlowA {
+  top: -8rem;
+  left: -6rem;
+  width: 24rem;
+  height: 24rem;
+  background: radial-gradient(
+    circle,
+    rgba(220, 108, 36, 0.14) 0%,
+    rgba(220, 108, 36, 0.05) 42%,
+    transparent 74%
+  );
+}
+
+.backgroundGlowB {
+  right: -8rem;
+  top: 6rem;
+  width: 22rem;
+  height: 22rem;
+  background: radial-gradient(
+    circle,
+    rgba(128, 109, 92, 0.12) 0%,
+    rgba(128, 109, 92, 0.04) 40%,
+    transparent 72%
+  );
+}
+
+.shell {
+  position: relative;
+  z-index: 1;
+}
+
+.heroGrid {
   display: grid;
-  gap: 2.5rem;
+  gap: 2rem;
   align-items: start;
 }
 
 @media (min-width: 1100px) {
-  .hero {
-    grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.92fr);
-    gap: 3rem;
+  .heroGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(380px, 0.9fr);
+    gap: 3.5rem;
   }
 }
 
 .mainColumn {
-  position: relative;
-  z-index: 1;
-  max-width: 50rem;
+  max-width: 39rem;
+  padding-top: 1.5rem;
+}
+
+@media (min-width: 1100px) {
+  .mainColumn {
+    padding-top: 4.25rem;
+  }
 }
 
 .sideColumn {
@@ -44,36 +85,22 @@
 }
 
 .eyebrow {
-  margin: 0 0 1rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.24em;
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--accent);
 }
 
-.title {
-  margin: 0;
-  font-size: clamp(2.8rem, 7vw, 5.2rem);
-  font-weight: 300;
-  line-height: 0.98;
-  letter-spacing: -0.04em;
-  max-width: 10ch;
+.lead {
+  margin: 1.4rem 0 0;
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  font-weight: 350;
+  line-height: 1.45;
+  letter-spacing: -0.03em;
+  color: var(--foreground);
   text-wrap: balance;
-}
-
-.intro {
-  margin-top: 1.75rem;
-  max-width: 40rem;
-  font-size: 1.12rem;
-  line-height: 1.9;
-  color: var(--muted-foreground);
-}
-
-@media (min-width: 768px) {
-  .intro {
-    font-size: 1.2rem;
-  }
 }
 
 .ctaRow {
@@ -84,220 +111,337 @@
 }
 
 .primaryCta,
-.secondaryCta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 3.25rem;
-  padding: 0.85rem 1.2rem;
-  border-radius: 9999px;
-  font-size: 0.98rem;
-  font-weight: 500;
-  text-decoration: none;
+.secondaryCta,
+.inlineLink,
+.contactPrimary,
+.contactSecondary {
   transition:
     transform 180ms ease,
     box-shadow 180ms ease,
     border-color 180ms ease,
     background-color 180ms ease,
-    color 180ms ease;
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+.primaryCta,
+.secondaryCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.35rem;
+  padding: 0.9rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.98rem;
+  font-weight: 550;
+  text-decoration: none;
 }
 
 .primaryCta {
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), #cb641f);
   color: white;
-  box-shadow: 0 14px 28px rgba(220, 108, 36, 0.22);
+  box-shadow:
+    0 16px 36px rgba(220, 108, 36, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .primaryCta:hover {
   transform: translateY(-2px);
-  box-shadow: 0 18px 34px rgba(220, 108, 36, 0.26);
+  box-shadow:
+    0 18px 40px rgba(220, 108, 36, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .secondaryCta {
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(60, 44, 32, 0.1);
+  background: rgba(255, 255, 255, 0.68);
   color: var(--foreground);
+  box-shadow: 0 10px 24px rgba(30, 24, 20, 0.05);
   backdrop-filter: blur(10px);
 }
 
 .secondaryCta:hover {
   transform: translateY(-2px);
-  border-color: rgba(220, 108, 36, 0.18);
+  border-color: rgba(220, 108, 36, 0.2);
   color: var(--accent);
 }
 
 .profileCard {
   position: relative;
-  margin-top: 2.5rem;
-}
-
-.profileGlow {
-  position: absolute;
-  inset: auto auto -1.5rem -1rem;
-  width: 13rem;
-  height: 13rem;
-  border-radius: 9999px;
-  background: radial-gradient(
-    circle,
-    rgba(220, 108, 36, 0.16),
-    rgba(220, 108, 36, 0.04) 44%,
-    transparent 72%
-  );
-  filter: blur(14px);
-  pointer-events: none;
-}
-
-.profileInner {
-  position: relative;
+  overflow: hidden;
   border-radius: 2rem;
-  padding: 1.4rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.72));
-  border: 1px solid rgba(255, 255, 255, 0.74);
+  padding: 1.45rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.78));
+  border: 1px solid rgba(255, 255, 255, 0.78);
   box-shadow:
-    0 24px 70px rgba(30, 24, 20, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    0 24px 70px rgba(28, 22, 18, 0.08),
+    0 8px 26px rgba(28, 22, 18, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(16px);
 }
 
 @media (min-width: 768px) {
-  .profileInner {
-    padding: 1.7rem;
+  .profileCard {
+    padding: 1.75rem;
+    border-radius: 2.25rem;
   }
+}
+
+.profileAccent {
+  position: absolute;
+  left: 0;
+  top: 1.4rem;
+  bottom: 1.4rem;
+  width: 3px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    180deg,
+    rgba(220, 108, 36, 0) 0%,
+    rgba(220, 108, 36, 0.85) 18%,
+    rgba(220, 108, 36, 0.25) 82%,
+    rgba(220, 108, 36, 0) 100%
+  );
+}
+
+.profileHeader {
+  display: grid;
+  gap: 1rem;
+  align-items: center;
+}
+
+@media (min-width: 640px) {
+  .profileHeader {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+}
+
+.monogram {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 1.35rem;
+  background: linear-gradient(135deg, rgba(220, 108, 36, 0.14), rgba(220, 108, 36, 0.05));
+  border: 1px solid rgba(220, 108, 36, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 10px 24px rgba(220, 108, 36, 0.08);
+  font-size: 1.18rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.profileHeaderText {
+  min-width: 0;
 }
 
 .profileKicker {
   margin: 0;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
+  font-size: 0.74rem;
+  font-weight: 650;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--accent);
 }
 
 .name {
-  margin: 0.9rem 0 0;
-  font-size: clamp(1.45rem, 3vw, 2rem);
+  margin: 0.65rem 0 0;
+  font-size: clamp(1.7rem, 3.2vw, 2.3rem);
   font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  color: var(--foreground);
   text-wrap: balance;
 }
 
-.roles {
-  margin-top: 1.35rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+.roleList {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1.5rem;
 }
 
-.roleTag {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.6rem;
-  padding: 0.55rem 0.95rem;
-  border-radius: 9999px;
-  background:
-    linear-gradient(180deg, rgba(220, 108, 36, 0.1), rgba(220, 108, 36, 0.07));
-  border: 1px solid rgba(220, 108, 36, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
-  font-size: 0.9rem;
+.roleItem {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--foreground);
+  border-left: 1px solid rgba(220, 108, 36, 0.16);
+}
+
+.profileDivider {
+  height: 1px;
+  margin: 1.5rem 0 1.35rem;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.08),
+    rgba(0, 0, 0, 0.02)
+  );
+}
+
+.contactList {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.contactPrimary,
+.contactSecondary {
+  display: inline-block;
+  width: fit-content;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.contactPrimary {
+  font-size: clamp(1.12rem, 1.8vw, 1.4rem);
+  font-weight: 420;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
   color: var(--foreground);
 }
 
-.infoCard {
-  position: relative;
-  border-radius: 2rem;
-  padding: 1.2rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.7));
-  border: 1px solid rgba(255, 255, 255, 0.74);
-  box-shadow:
-    0 24px 70px rgba(30, 24, 20, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(16px);
+.contactPrimary:hover {
+  color: var(--accent);
 }
 
-@media (min-width: 768px) {
-  .infoCard {
-    padding: 1.4rem;
+.contactSecondary {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+}
+
+.contactSecondary:hover {
+  color: var(--accent);
+}
+
+.bottomGrid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 960px) {
+  .bottomGrid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(280px, 0.8fr);
+    gap: 1.25rem;
+    margin-top: 2.5rem;
   }
 }
 
-.infoStack {
-  display: grid;
-  gap: 1rem;
-}
-
-.infoBlock,
-.contactTile,
-.noteCard {
-  border-radius: 1.5rem;
-  padding: 1.1rem 1.1rem 1.15rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.74));
-  border: 1px solid rgba(0, 0, 0, 0.05);
+.practiceCard,
+.notePanel {
+  border-radius: 2rem;
   box-shadow:
-    0 10px 30px rgba(25, 20, 16, 0.05),
+    0 20px 50px rgba(28, 22, 18, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.82);
 }
 
-.infoGrid {
-  display: grid;
-  gap: 1rem;
+.practiceCard {
+  padding: 1.45rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.72));
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(14px);
 }
 
-@media (min-width: 640px) {
-  .infoGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.notePanel {
+  padding: 1.45rem;
+  background: linear-gradient(180deg, rgba(252, 248, 243, 0.92), rgba(247, 240, 232, 0.9));
+  border: 1px solid rgba(220, 108, 36, 0.08);
+}
+
+@media (min-width: 768px) {
+  .practiceCard,
+  .notePanel {
+    padding: 1.75rem;
+    border-radius: 2.1rem;
   }
 }
 
-.label {
+.sectionLabel {
   margin: 0;
-  font-size: 0.76rem;
-  font-weight: 600;
+  font-size: 0.74rem;
+  font-weight: 650;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--accent);
 }
 
-.valueLarge {
-  margin: 0.7rem 0 0;
+.practiceName {
+  margin: 0.75rem 0 0;
   font-size: 1.14rem;
   font-weight: 500;
-  line-height: 1.55;
+  line-height: 1.65;
   color: var(--foreground);
-  text-wrap: balance;
+}
+
+.infoDivider {
+  height: 1px;
+  margin: 1.35rem 0 1.2rem;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.07),
+    rgba(0, 0, 0, 0.02)
+  );
 }
 
 .address {
-  margin-top: 0.7rem;
+  margin-top: 0.75rem;
   display: grid;
-  gap: 0.2rem;
+  gap: 0.16rem;
   color: var(--foreground);
-  line-height: 1.7;
+  line-height: 1.72;
 }
 
-.contactLink {
-  display: inline-block;
-  margin-top: 0.7rem;
-  font-size: 1.05rem;
-  font-weight: 500;
-  line-height: 1.6;
-  color: var(--foreground);
-  text-decoration: none;
-  word-break: break-word;
-  transition: color 180ms ease;
+.address p {
+  margin: 0;
 }
 
-.contactLink:hover {
-  color: var(--accent);
+.noteKicker {
+  margin: 0;
+  font-size: 0.74rem;
+  font-weight: 650;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(60, 44, 32, 0.58);
 }
 
 .noteText {
-  margin: 0;
-  font-size: 0.98rem;
-  line-height: 1.75;
-  color: var(--muted-foreground);
+  margin: 0.8rem 0 0;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--foreground);
+}
+
+.inlineLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 2.9rem;
+  margin-top: 1.2rem;
+  padding: 0.72rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(60, 44, 32, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--foreground);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 550;
+}
+
+.inlineLink:hover {
+  transform: translateY(-2px);
+  border-color: rgba(220, 108, 36, 0.2);
+  color: var(--accent);
+}
+
+.primaryCta:focus-visible,
+.secondaryCta:focus-visible,
+.inlineLink:focus-visible,
+.contactPrimary:focus-visible,
+.contactSecondary:focus-visible {
+  outline: 2px solid rgba(220, 108, 36, 0.55);
+  outline-offset: 3px;
 }

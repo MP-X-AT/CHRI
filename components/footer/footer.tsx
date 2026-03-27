@@ -18,69 +18,39 @@ export default function Footer({
   return (
     <footer className={styles.footer}>
       <Container>
-        <div className={styles.footerGrid}>
-          <div className={styles.footerBrand}>
-            <p className={styles.footerName}>{footer.kicker}</p>
-            <p className={styles.footerDescription}>{footer.description}</p>
-
-            <div className={styles.footerMeta}>
-              <span className={styles.footerLine} />
-              <p className={styles.footerLocation}>
-                {site.practice} · {site.address[1]}
-              </p>
+        <div className={styles.footerTop}>
+          <div className={styles.brandBlock}>
+            <div className={styles.brandRow}>
+              <span className={styles.brandLine} aria-hidden="true" />
+              <p className={styles.brandName}>{footer.kicker}</p>
             </div>
+
+            <p className={styles.brandClaim}>{footer.description}</p>
           </div>
 
-          <div className={styles.footerColumns}>
-            <div>
-              <p className={styles.footerLabel}>{footer.contactLabel}</p>
+          <nav className={styles.legalNav} aria-label={footer.legalLabel}>
+            <Link href={imprintHref} className={styles.footerLink}>
+              {footer.imprint}
+            </Link>
 
-              <div className={styles.footerLinks}>
-                <a href={`mailto:${site.email}`} className={styles.footerLink}>
-                  {site.email}
-                </a>
+            <span className={styles.navDot} aria-hidden="true" />
 
-                <a href={`tel:${site.phoneHref}`} className={styles.footerLink}>
-                  {site.phone}
-                </a>
-
-                <a
-                  href={site.linkedinHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`${styles.footerLink} ${styles.footerLinkMuted}`}
-                >
-                  {site.linkedinLabel}
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <p className={styles.footerLabel}>{footer.legalLabel}</p>
-
-              <div className={styles.footerLinks}>
-                <Link href={imprintHref} className={styles.footerLink}>
-                  {footer.imprint}
-                </Link>
-
-                <Link href={privacyHref} className={styles.footerLink}>
-                  {footer.privacy}
-                </Link>
-              </div>
-            </div>
-          </div>
+            <Link href={privacyHref} className={styles.footerLink}>
+              {footer.privacy}
+            </Link>
+          </nav>
         </div>
 
         <div className={styles.footerBottom}>
-          <p>{site.copyright}</p>
+          <p className={styles.bottomText}>{site.copyright}</p>
 
-          <p>
+          <p className={styles.bottomText}>
             {footer.developerLabel}{' '}
             <a
               href={site.developerHref}
               target="_blank"
               rel="noreferrer"
-              className={styles.footerLink}
+              className={styles.footerLinkSubtle}
             >
               {site.developerName}
             </a>

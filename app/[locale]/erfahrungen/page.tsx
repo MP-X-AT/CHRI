@@ -21,35 +21,17 @@ export default async function ErfahrungenPage({
   const statYearsSupport = new Date().getFullYear() - 1990
   const statYearsPractice = new Date().getFullYear() - 2003
 
-  const stats =
+  const profileHighlights =
     locale === 'en'
       ? [
-          {
-            value: `${statYearsSupport}+`,
-            label: 'years of psychosocial support',
-          },
-          {
-            value: `${statYearsPractice}+`,
-            label: 'years in private practice',
-          },
-          {
-            value: 'International',
-            label: 'lectures, workshops and seminars',
-          },
+          `${statYearsSupport}+ years of psychosocial work`,
+          `${statYearsPractice}+ years in private practice`,
+          'International lectures, workshops and seminars',
         ]
       : [
-          {
-            value: `${statYearsSupport}+`,
-            label: 'Jahre psychosoziale Unterstützung',
-          },
-          {
-            value: `${statYearsPractice}+`,
-            label: 'Jahre freie Praxis',
-          },
-          {
-            value: 'International',
-            label: 'Vorträge, Workshops und Seminare',
-          },
+          `${statYearsSupport}+ Jahre psychosoziale Arbeit`,
+          `${statYearsPractice}+ Jahre freie Praxis`,
+          'Internationale Vorträge, Workshops und Seminare',
         ]
 
   const hasQualifications =
@@ -59,85 +41,81 @@ export default async function ErfahrungenPage({
 
   return (
     <section className={styles.section}>
+      <div className={styles.backgroundGlowA} />
+      <div className={styles.backgroundGlowB} />
+
       <Container>
-        <div className={styles.hero}>
-          <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}>{erfahrungen.eyebrow}</p>
-
-            <h1 className={styles.title}>{erfahrungen.title}</h1>
-
-            <p className={styles.intro}>{erfahrungen.intro}</p>
-          </div>
-
-          <aside className={styles.heroPanel} aria-label="Experience highlights">
-            <div className={styles.panelGlow} />
-
-            <div className={styles.panelInner}>
-              <div className={styles.panelBadge}>
-                {locale === 'en' ? 'Professional profile' : 'Berufliches Profil'}
-              </div>
-
-              <div className={styles.stats}>
-                {stats.map((stat) => (
-                  <div key={stat.label} className={styles.statCard}>
-                    <div className={styles.statValue}>{stat.value}</div>
-                    <div className={styles.statLabel}>{stat.label}</div>
-                  </div>
-                ))}
-              </div>
+        <div className={styles.shell}>
+          <div className={styles.hero}>
+            <div className={styles.heroCopy}>
+              <p className={styles.eyebrow}>{erfahrungen.eyebrow}</p>
+              <p className={styles.lead}>{erfahrungen.intro}</p>
             </div>
-          </aside>
-        </div>
 
-        <div className={styles.contentGrid}>
-          <div className={styles.sectionLead}>
-            <p className={styles.sectionKicker}>
-              {locale === 'en' ? 'Professional experience' : 'Berufliche Erfahrung'}
-            </p>
+            <aside
+              className={styles.profilePanel}
+              aria-label={locale === 'en' ? 'Professional profile' : 'Berufliches Profil'}
+            >
+              <div className={styles.profileInner}>
+                <p className={styles.profileKicker}>
+                  {locale === 'en' ? 'Professional profile' : 'Berufliches Profil'}
+                </p>
 
-            <h2 className={styles.sectionTitle}>
-              {locale === 'en'
-                ? 'Focus areas, leadership and international teaching'
-                : 'Schwerpunkte, Leitungserfahrung und internationale Lehrtätigkeit'}
-            </h2>
-          </div>
-
-          <div className={styles.experienceGrid}>
-            {erfahrungen.items.map((item, index) => (
-              <article key={item} className={styles.experienceCard}>
-                <div className={styles.cardTop}>
-                  <span className={styles.cardIndex}>
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
+                <div className={styles.profileStatement}>
+                  {profileHighlights.map((item) => (
+                    <p key={item} className={styles.profileLine}>
+                      {item}
+                    </p>
+                  ))}
                 </div>
-
-                <p className={styles.experienceText}>{item}</p>
-              </article>
-            ))}
+              </div>
+            </aside>
           </div>
-        </div>
 
-        {hasQualifications ? (
-          <div className={styles.qualificationsSection}>
-            <div className={styles.qualificationsHeader}>
+          <section className={styles.sectionBlock}>
+            <div className={styles.sectionLead}>
               <p className={styles.sectionKicker}>
-                {locale === 'en' ? 'Qualifications' : 'Qualifikationen'}
+                {locale === 'en' ? 'Professional experience' : 'Berufliche Erfahrung'}
               </p>
 
               <h2 className={styles.sectionTitle}>
-                {erfahrungen.qualificationsTitle}
+                {locale === 'en'
+                  ? 'Practice, teaching and professional leadership'
+                  : 'Praxis, Lehre und fachliche Leitung'}
               </h2>
             </div>
 
-            <div className={styles.qualificationsWrap}>
-              {erfahrungen.qualifications.map((item) => (
-                <span key={item} className={styles.qualificationTag}>
-                  {item}
-                </span>
+            <div className={styles.experienceList}>
+              {erfahrungen.items.map((item) => (
+                <article key={item} className={styles.experienceItem}>
+                  <p className={styles.experienceText}>{item}</p>
+                </article>
               ))}
             </div>
-          </div>
-        ) : null}
+          </section>
+
+          {hasQualifications ? (
+            <section className={styles.sectionBlock}>
+              <div className={styles.sectionLead}>
+                <p className={styles.sectionKicker}>
+                  {locale === 'en' ? 'Qualifications' : 'Qualifikationen'}
+                </p>
+
+                <h2 className={styles.sectionTitle}>
+                  {erfahrungen.qualificationsTitle}
+                </h2>
+              </div>
+
+              <div className={styles.qualificationsList}>
+                {erfahrungen.qualifications.map((item) => (
+                  <div key={item} className={styles.qualificationItem}>
+                    <p className={styles.qualificationText}>{item}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
+        </div>
       </Container>
     </section>
   )
