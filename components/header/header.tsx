@@ -33,10 +33,6 @@ export default function Header({
   const normalizedPathname = normalizePath(pathname)
 
   useEffect(() => {
-    setOpen(false)
-  }, [normalizedPathname])
-
-  useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
 
     return () => {
@@ -49,13 +45,15 @@ export default function Header({
 
   const isActive = (href: string) => normalizePath(href) === normalizedPathname
 
+  const closeMenu = () => setOpen(false)
+
   return (
     <header className={styles.header}>
       <div className={styles.headerGlow} />
       <div className={styles.headerAura} />
 
       <Container className={styles.headerInner}>
-        <Link href={`/${locale}`} className={styles.brand} onClick={() => setOpen(false)}>
+        <Link href={`/${locale}`} className={styles.brand} onClick={closeMenu}>
           <div className={styles.brandMark} />
           <div className={styles.brandText}>
             <span className={styles.brandName}>{site.brandName}</span>
@@ -73,6 +71,7 @@ export default function Header({
                 <Link
                   key={`${item.label}-${item.href}`}
                   href={href}
+                  onClick={closeMenu}
                   className={`${styles.desktopNavLink} ${
                     active ? styles.desktopNavLinkActive : ''
                   }`}
@@ -145,7 +144,7 @@ export default function Header({
                       >
                         <Link
                           href={href}
-                          onClick={() => setOpen(false)}
+                          onClick={closeMenu}
                           className={`${styles.mobileNavLink} ${
                             active ? styles.mobileNavLinkActive : ''
                           }`}

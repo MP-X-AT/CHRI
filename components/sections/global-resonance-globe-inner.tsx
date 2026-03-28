@@ -11,6 +11,11 @@ import { COUNTRY_NODES, type CountryNode } from '@/lib/country-nodes'
 import type { SiteContent } from '@/lib/types'
 import styles from './global-resonance-globe.module.css'
 
+type GlobeContent = SiteContent['arbeitsweise']['globe'] & {
+  defaultFocusLabel?: string
+  defaultFocusText?: string
+}
+
 type Props = {
   content: SiteContent['arbeitsweise']['globe']
 }
@@ -110,9 +115,9 @@ function hashString(value: string) {
 }
 
 function pointHitRadius(size?: CountryNode['size']) {
-  if (size === 'lg') return 0.82
-  if (size === 'md') return 0.7
-  return 0.6
+  if (size === 'lg') return 1.02
+  if (size === 'md') return 0.84
+  return 0.72
 }
 
 function glowClassForCountry(id: string) {
@@ -174,6 +179,7 @@ function createDashInitialGap(
 }
 
 export default function GlobalResonanceGlobeInner({ content }: Props) {
+  const globeContent = content as GlobeContent
   const globeRef = useRef<GlobeMethods | undefined>(undefined)
   const globeWrapRef = useRef<HTMLDivElement | null>(null)
 
@@ -221,12 +227,13 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
 
       const width = entry.contentRect.width
 
-      let height = width * 0.78
-      if (width < 480) height = width * 0.9
-      else if (width < 768) height = width * 0.82
-      else if (width < 1280) height = width * 0.7
+      let height = width * 0.92
+      if (width < 480) height = width * 1.02
+      else if (width < 768) height = width * 0.92
+      else if (width < 1100) height = width * 0.88
+      else height = width * 0.84
 
-      const clampedHeight = Math.max(320, Math.min(height, 740))
+      const clampedHeight = Math.max(360, Math.min(height, 820))
 
       setGlobeSize({
         width,
@@ -259,6 +266,18 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
     ? activeCountry
     : hoveredCountry ?? activeCountry
 
+  const helperTitle = activeCountry
+    ? globeContent.countryLabels[activeCountry.id] ?? activeCountry.id
+    : globeContent.defaultFocusLabel ?? globeContent.activeFocusLabel
+
+  const helperText = activeCountry
+    ? globeContent.activeFocusText
+    : globeContent.defaultFocusText ?? globeContent.activeFocusText
+
+  const helperHint = isTouchDevice
+    ? globeContent.interactionHintTouch
+    : globeContent.interactionHintHover
+
   const globeMaterial = useMemo(() => {
     const material = new THREE.MeshPhongMaterial()
     material.color = new THREE.Color('#ffffff')
@@ -279,15 +298,15 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
       : focusedCountry
         ? isMobile
           ? 0.003
-          : 0.007
+          : 0.006
         : isMobile
-          ? 0.018
-          : 0.06
+          ? 0.016
+          : 0.05
 
     controls.enablePan = false
     controls.enableDamping = true
     controls.dampingFactor = isMobile ? 0.14 : 0.1
-    controls.rotateSpeed = isMobile ? 0.34 : 0.46
+    controls.rotateSpeed = isMobile ? 0.38 : 0.5
     controls.minDistance = isMobile ? 210 : 180
     controls.maxDistance = isMobile ? 430 : 400
 
@@ -313,9 +332,9 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
     if (hoveredCountry && !isTouchDevice) {
       globeRef.current.pointOfView(
         {
-          lat: hoveredCountry.lat + (isMobile ? 3 : 5.4),
-          lng: hoveredCountry.lng - (isMobile ? 6.5 : 10.5),
-          altitude: isMobile ? 1.1 : 0.9,
+          lat: hoveredCountry.lat + (isMobile ? 3 : 4.8),
+          lng: hoveredCountry.lng - (isMobile ? 6.5 : 8.4),
+          altitude: isMobile ? 1.1 : 0.94,
         },
         prefersReducedMotion ? 0 : 900
       )
@@ -325,9 +344,9 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
     if (activeCountry) {
       globeRef.current.pointOfView(
         {
-          lat: activeCountry.lat + (isMobile ? 2.6 : 4.4),
-          lng: activeCountry.lng - (isMobile ? 5.2 : 8.6),
-          altitude: isMobile ? 1.12 : 0.95,
+          lat: activeCountry.lat + (isMobile ? 2.6 : 4.2),
+          lng: activeCountry.lng - (isMobile ? 5.2 : 7.2),
+          altitude: isMobile ? 1.12 : 0.98,
         },
         prefersReducedMotion ? 0 : isMobile ? 850 : 1050
       )
@@ -336,9 +355,9 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
 
     globeRef.current.pointOfView(
       {
-        lat: 24,
-        lng: 30,
-        altitude: isMobile ? 1.28 : 1.14,
+        lat: 18,
+        lng: 20,
+        altitude: isMobile ? 1.24 : 1.08,
       },
       prefersReducedMotion ? 0 : 1300
     )
@@ -434,40 +453,22 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
     return baseNodes
   }, [hoveredCountry, activeCountry, focusedCountry, isMobile])
 
-  const interactionHint = isTouchDevice
-    ? content.interactionHintTouch
-    : content.interactionHintHover
+  const capsuleLimit = isMobile ? 3 : 4
 
   return (
-    <section className="relative overflow-hidden rounded-[2.2rem] border border-white/60 bg-[radial-gradient(circle_at_top_left,rgba(255,187,122,0.18),transparent_28%),radial-gradient(circle_at_top_right,rgba(118,196,255,0.16),transparent_26%),radial-gradient(circle_at_bottom,rgba(192,156,255,0.12),transparent_24%),linear-gradient(180deg,#fff3e8_0%,#fbfdff_42%,#f4f8ff_100%)] p-5 shadow-[0_24px_72px_rgba(80,90,120,0.12)] sm:rounded-[2.7rem] sm:p-8 lg:rounded-[3rem] lg:p-10">
+    <section className="relative overflow-hidden rounded-[2rem] border border-white/65 bg-[radial-gradient(circle_at_top_left,rgba(255,187,122,0.18),transparent_28%),radial-gradient(circle_at_top_right,rgba(118,196,255,0.16),transparent_26%),radial-gradient(circle_at_bottom,rgba(192,156,255,0.12),transparent_24%),linear-gradient(180deg,#fff3e8_0%,#fbfdff_42%,#f4f8ff_100%)] p-4 shadow-[0_24px_72px_rgba(80,90,120,0.12)] sm:p-6 lg:p-8">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -left-12 top-0 h-52 w-52 rounded-full bg-[rgba(255,170,110,0.16)] blur-3xl sm:h-64 sm:w-64" />
         <div className="absolute right-[-1rem] top-[8%] h-56 w-56 rounded-full bg-[rgba(120,190,255,0.14)] blur-3xl sm:h-72 sm:w-72" />
         <div className="absolute bottom-[-4rem] left-[36%] h-52 w-52 rounded-full bg-[rgba(196,175,255,0.12)] blur-3xl sm:h-64 sm:w-64" />
       </div>
 
-      <div className="relative z-10 max-w-3xl">
-        <p className="text-[11px] uppercase tracking-[0.24em] text-[var(--accent)] sm:text-sm">
-          {content.eyebrow}
-        </p>
-
-        <h2 className="mt-3 text-2xl font-light tracking-tight text-[var(--foreground)] sm:text-4xl lg:text-5xl">
-          {content.title}
-        </h2>
-
-        <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--muted-foreground)] sm:mt-5 sm:text-lg sm:leading-8">
-          {content.intro}
-        </p>
-
-        <p className="mt-5 text-[11px] uppercase tracking-[0.2em] text-[var(--foreground)]/48 sm:mt-6 sm:text-sm sm:tracking-[0.22em]">
-          {interactionHint}
-        </p>
-      </div>
-
-      <div className="relative z-10 mt-8 overflow-hidden rounded-[1.75rem] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.34),rgba(255,255,255,0.14))] shadow-[inset_0_1px_0_rgba(255,255,255,0.56)] sm:mt-10 sm:rounded-[2.4rem]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.4),transparent_22%),radial-gradient(circle_at_72%_22%,rgba(255,210,155,0.18),transparent_20%),radial-gradient(circle_at_58%_78%,rgba(120,190,255,0.14),transparent_18%)]" />
-
-        <div ref={globeWrapRef} className="relative min-h-[20rem] sm:min-h-[30rem]">
+      <div className="relative z-10 grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(18rem,0.42fr)] lg:items-stretch lg:gap-5">
+        <div
+          ref={globeWrapRef}
+          className="relative min-h-[22rem] overflow-hidden rounded-[1.7rem] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.08))] sm:min-h-[30rem] lg:min-h-[36rem]"
+        >
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_24%_22%,rgba(255,196,146,0.18),transparent_26%),radial-gradient(circle_at_72%_18%,rgba(168,218,255,0.14),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.18),rgba(244,248,255,0.12))]" />
           {globeSize.width > 0 && (
             <Globe
               ref={globeRef}
@@ -489,14 +490,14 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
               pointsData={COUNTRY_NODES}
               pointLat="lat"
               pointLng="lng"
-              pointColor={() => 'rgba(255,255,255,0.01)'}
+              pointColor={() => 'rgba(255,255,255,0.02)'}
               pointLabel={() => ''}
               polygonLabel={() => ''}
               pointAltitude={isMobile ? 0.014 : 0.016}
               pointRadius={(item: object) => {
                 const node = item as CountryNode
                 const base = pointHitRadius(node.size)
-                const touchBoost = isTouchDevice ? 1.18 : 1
+                const touchBoost = isTouchDevice ? 1.2 : 1
                 const isHovered = !isTouchDevice && hoveredCountry?.id === node.id
                 const isActive = activeCountry?.id === node.id
 
@@ -509,7 +510,8 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
                 if (isTouchDevice) return
                 setHoveredCountry(point ? (point as CountryNode) : null)
               }}
-              onPointClick={(point: object) => {
+              onPointClick={(point: object | null) => {
+                if (!point) return
                 const item = point as CountryNode
                 setActiveCountry((current) => (current?.id === item.id ? null : item))
               }}
@@ -552,7 +554,7 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
                 if (node.isHovered || node.isActive) {
                   const label = document.createElement('div')
                   label.className = styles.countryHoverLabel
-                  label.textContent = content.countryLabels[node.id] ?? node.id
+                  label.textContent = globeContent.countryLabels[node.id] ?? node.id
                   el.appendChild(label)
                 }
 
@@ -560,46 +562,46 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
               }}
             />
           )}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(244,248,255,0.88)] via-[rgba(244,248,255,0.28)] to-transparent sm:h-32" />
         </div>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(244,248,255,0.88)] via-[rgba(244,248,255,0.28)] to-transparent sm:h-32" />
-      </div>
+        <aside className="relative flex flex-col justify-between rounded-[1.55rem] border border-white/70 bg-white/62 p-4 shadow-[0_14px_42px_rgba(80,90,120,0.08)] backdrop-blur-md sm:p-5">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--foreground)]/42">
+              {helperTitle}
+            </p>
+            <p className="mt-3 text-[0.98rem] leading-7 text-[var(--foreground)]/88 sm:text-[1rem]">
+              {helperText}
+            </p>
+          </div>
 
-      {isTouchDevice && activeCountry && (
-        <div className="relative z-10 mt-4 rounded-[1.4rem] border border-white/70 bg-white/72 p-4 shadow-[0_14px_42px_rgba(80,90,120,0.08)] backdrop-blur-md sm:hidden">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--foreground)]/45">
-                {content.activeFocusLabel}
-              </p>
-              <h3 className="mt-1 text-lg font-medium text-[var(--foreground)]">
-                {content.countryLabels[activeCountry.id] ?? activeCountry.id}
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-[var(--muted-foreground)]">
-                {content.activeFocusText}
-              </p>
+          <div className="mt-5 space-y-4 border-t border-[rgba(18,18,18,0.08)] pt-4">
+            <p className="text-sm leading-6 text-[var(--muted-foreground)]">
+              {helperHint}
+            </p>
+
+            <div className="flex flex-wrap gap-2.5">
+              {globeContent.capsules.slice(0, capsuleLimit).map((capsule) => (
+                <span
+                  key={capsule}
+                  className="rounded-full border border-white/80 bg-white/68 px-3 py-1.5 text-[0.72rem] tracking-[0.08em] text-[var(--foreground)]/68"
+                >
+                  {capsule}
+                </span>
+              ))}
             </div>
 
-            <button
-              type="button"
-              onClick={() => setActiveCountry(null)}
-              className="shrink-0 rounded-full border border-white/70 bg-white/82 px-3 py-1.5 text-xs font-medium text-[var(--foreground)]/75 transition hover:bg-white"
-            >
-              {content.closeButton}
-            </button>
+            {activeCountry ? (
+              <button
+                type="button"
+                onClick={() => setActiveCountry(null)}
+                className="inline-flex w-fit items-center rounded-full border border-white/70 bg-white/82 px-3.5 py-2 text-xs font-medium text-[var(--foreground)]/75 transition hover:bg-white"
+              >
+                {globeContent.closeButton}
+              </button>
+            ) : null}
           </div>
-        </div>
-      )}
-
-      <div className="relative z-10 mt-6 flex flex-wrap items-center gap-3 sm:mt-8 sm:gap-4">
-        {content.capsules.map((capsule) => (
-          <div
-            key={capsule}
-            className="rounded-full border border-white/65 bg-white/62 px-3.5 py-2 text-xs text-[var(--foreground)]/74 backdrop-blur-sm sm:px-4 sm:text-sm"
-          >
-            {capsule}
-          </div>
-        ))}
+        </aside>
       </div>
     </section>
   )

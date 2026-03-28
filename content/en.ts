@@ -1,15 +1,36 @@
 import type { SiteContent } from '@/lib/types'
 
-export const enContent: SiteContent = {
+type ExtendedSiteContent = SiteContent & {
+  arbeitsweise: SiteContent['arbeitsweise'] & {
+    markersEyebrow: string
+    markersLead: string
+    stats: Array<
+      {
+        label: string
+      } & Partial<{
+        value: string
+      }>
+    >
+    globe: SiteContent['arbeitsweise']['globe'] & {
+      defaultFocusLabel: string
+      defaultFocusText: string
+    }
+  }
+  footer: SiteContent['footer'] & {
+    cookieNotice: string
+  }
+}
+
+export const enContent: ExtendedSiteContent = {
   locale: 'en',
   meta: {
-    title: 'Christine Pichlhöfer',
+    title: 'Christine Pichlhöfer, MSc',
     description:
       'Gender-sensitive psychotherapy, counselling, supervision and coaching in Vienna.',
   },
   site: {
-    brandName: 'Christine Pichlhöfer',
-    brandSubtitle: 'Psychotherapy · Psychodrama',
+    brandName: 'Christine Pichlhöfer, MSc',
+    brandSubtitle: 'Psychotherapist in Vienna',
     email: 'psychodrama@pichlhoefer.eu',
     phone: '0699 / 110 144 83',
     phoneHref: '+4369911014483',
@@ -20,7 +41,7 @@ export const enContent: SiteContent = {
       'https://at.linkedin.com/in/christine-pichlh%C3%B6fer-87a94bb0',
     developerName: 'mp-x.at',
     developerHref: 'https://mp-x.at',
-    copyright: '© Christine Pichlhöfer',
+    copyright: '© Christine Pichlhöfer, MSc',
   },
   header: {
     openMenuLabel: 'Open menu',
@@ -52,24 +73,19 @@ export const enContent: SiteContent = {
       href: 'kontakt',
     },
   ],
-
   "home": {
     "hero": {
       "kicker": "Psychotherapy in Vienna",
       "title": "Space for clarity, growth and new perspectives.",
       "displayTitle": {
-        "before": "Psychotherapy with",
-        "highlight": "professional depth",
-        "after": "and personal presence."
+        "before": "Gender-sensitive psychotherapy",
+        "highlight": "Supervision and coaching",
+        "after": "Within the psychodrama method, Humanistic Cluster"
       },
-      "text": "Here you will find information about my therapeutic approach, professional focus areas, and background in psychotherapy, psychodrama, group dynamics and supervision.",
+      "text": "",
       "primaryCta": "Get in touch by email",
       "secondaryCta": "View approach",
-      "infoItems": [
-        "Psychodrama, group dynamics and supervision",
-        "For colleagues, trainees and clients",
-        "Therapy available in German and English"
-      ],
+      "infoItems": [],
       "imageAlt": "Practice room"
     },
     "midStage": {
@@ -192,7 +208,7 @@ export const enContent: SiteContent = {
       {
         "eyebrow": "Personal strain",
         "title": "When inner tension, exhaustion or crises become overwhelming.",
-        "text": "Psychotherapy can help when symptoms, overload or difficult phases of life begin to narrow everyday life and new orientation is needed.",
+        "text": "Psychotherapy can help when symptoms, overwhelm or difficult phases of life begin to narrow everyday life.",
         "itemIds": [
           "life-crises",
           "anxiety",
@@ -225,21 +241,23 @@ export const enContent: SiteContent = {
     "closingText": "The focus is not only on individual topics, but on the respective life situation, personal resources and the question of what can become helpful, sustainable and understandable in the shared process."
   },
   "arbeitsweise": {
+    "markersEyebrow": "Approach",
+    "markersLead": "A way of working that understands resonance, dignity and human diversity not as metrics, but as a lived space.",
     "eyebrow": "Approach",
     "title": "Working together at eye level",
     "intro": "The focus is on each person’s life situation, personal resources and the possibility of developing new ways of acting.",
     "stats": [
       {
-        "value": "60+",
-        "label": "Countries and family roots present in the resonance space of this work"
+        "value": "",
+        "label": "Life stories, family backgrounds and cultural contexts that shape the shared work"
       },
       {
-        "value": "1",
-        "label": "Attitude with room for dignity, encounter and development"
+        "value": "",
+        "label": "A shared space where encounter, dignity and development can emerge"
       },
       {
-        "value": "100%",
-        "label": "Human-centred, appreciative and non-polarising"
+        "value": "",
+        "label": "Human-centred, nuanced and free from simplifying assumptions"
       }
     ],
     "imageAlt": "Abstract representation of diversity, encounter and connectedness",
@@ -258,30 +276,32 @@ export const enContent: SiteContent = {
     "psychodramaQuote": "“Psychodrama is the method that explores the truth of the soul through action.”",
     "psychodramaAuthor": "J. L. Moreno",
     "psychodramaTitle": "Psychodrama",
-    "psychodramaText": "My psychotherapeutic training is based on psychodrama, a therapeutic method recognised under Austrian psychotherapy law. Based on role theory, psychodrama was developed in the 1930s by the physician and philosopher Jakob Levy Moreno.",
+    "psychodramaText": "My psychotherapeutic training is based on psychodrama, a therapeutic method recognised under Austrian psychotherapy law.",
     "psychodramaDetails": [
       "Psychodrama sees the roots of emotional imbalance in the fact that, in certain situations, suitable strategies for action are missing or cannot be used appropriately.",
       "The aim in therapy is to use enactment, constellations, symbolic work and conversation to unlock creative potential and make thoughts and feelings tangible.",
       "Through engaging with old and new roles, perspectives can be broadened or changed and new solutions can emerge."
     ],
-    "methodInfo": "Psychotherapy is a treatment method for healing or alleviating disturbances in emotional life, social relationships, behaviour or certain bodily functions. Therapeutic progress may include not only a reduction in symptoms, but also changes in experience, thinking and feeling, expressed in greater self-acceptance, joy in life and social competence.",
+    "methodInfo": "Psychotherapy is a treatment method for alleviating disturbances in emotional life, social relationships and behaviour.",
     "externalLinkLabel": "Learn more about psychodrama on the website of the Austrian Psychodrama Section",
     "globe": {
       "eyebrow": "Resonance space",
       "title": "Connected with many parts of the world",
-      "intro": "Biographies, family roots and personal life paths connected with many parts of the world and visible in the resonance space of my work.",
-      "interactionHintTouch": "Tap a point to explore proximity and connections within the resonance space.",
-      "interactionHintHover": "Move your cursor over a point to explore proximity and connections within the resonance space.",
+      "intro": "The work is shaped by diverse life paths, family backgrounds and cultural contexts that become part of the therapeutic process.",
+      "interactionHintTouch": "Touch a point to explore connections and proximity within the resonance space.",
+      "interactionHintHover": "Move across the points to reveal connections and proximity within the resonance space.",
+      "defaultFocusLabel": "Resonance space",
+      "defaultFocusText": "Each point represents life stories, relationships and contexts that shape and expand the therapeutic space.",
       "activeFocusLabel": "In focus",
-      "activeFocusText": "Each point stands for life stories, relationships and contexts that shape the therapeutic resonance space.",
+      "activeFocusText": "Each point represents life stories, relationships and contexts that shape and expand the therapeutic space.",
       "closeButton": "Close focus",
       "capsules": [
-        "Biographies",
-        "Family histories",
-        "Migration",
-        "Multilingualism",
-        "Relationship",
-        "Resonance"
+        "Biographical experience",
+        "Family backgrounds",
+        "Migration and origin",
+        "Multilingual life contexts",
+        "Relational dynamics",
+        "Resonance spaces"
       ],
       "countryLabels": {
         "austria": "Austria",
@@ -348,7 +368,7 @@ export const enContent: SiteContent = {
   },
   "erfahrungen": {
     "eyebrow": "Experience",
-    "title": "Many years of experience in psychosocial support and psychotherapy",
+    "title": "Experience",
     "intro": "I began providing professional psychosocial support in 1990. Since 2003, I have also been working as a psychotherapist in private practice in Vienna.",
     "items": [
       "Support for children, adolescents and their families facing serious difficulties, New York, USA",
@@ -360,13 +380,16 @@ export const enContent: SiteContent = {
       "Certified trainer in Motivational Interviewing, Centre for Motivation & Change (A, I, NL)",
       "Lectures, workshops and seminars nationally and internationally"
     ],
-    "qualificationsTitle": "Qualifications and teaching",
+    "qualificationsTitle": "Professional roles",
     "qualifications": [
-      "Psychotherapist",
+      "Psychotherapist, gender- and culture-sensitive",
+      "Training therapist and training supervision (also in the field of child and adolescent work)",
       "Qualified social worker",
-      "Teaching at the Psychodrama Section of ÖAGG",
       "Lecturer at Danube University Krems",
-      "Speaker for Fachstelle NÖ and SDW Vienna"
+      "Speaker for Fachstelle NÖ",
+      "Speaker in the psychotherapy propaedeutic programme",
+      "Trainer in Motivational Interviewing",
+      "Lecturer nationally and internationally (AT, DE, NL, USA, UA, EST)"
     ]
   },
   "publikationen": {
@@ -375,7 +398,7 @@ export const enContent: SiteContent = {
     "intro": "A selection of publications on psychodrama, body work, trauma, gender roles, prevention and social participation. These contributions connect professional reflection, practical experience and a sensitive perspective on relationship, development and social reality.",
     "items": [
       {
-        "featured": true,
+        "featured": false,
         "title": "Body politics – an exercise in body relationship",
         "subtitle": "Journal of Psychodrama and Sociometry · 2023",
         "year": "2023",
@@ -404,6 +427,7 @@ export const enContent: SiteContent = {
         "ctaLabel": "Open publication"
       },
       {
+        "featured": true,
         "title": "Intercultural competence in working with traumatised people with refugee experience",
         "subtitle": "Journal of Psychodrama and Sociometry · 2021",
         "year": "2021",
@@ -457,7 +481,7 @@ export const enContent: SiteContent = {
           "Participation",
           "Society"
         ],
-        "ctaLabel": "Open PDF"
+        "ctaLabel": "Open publication"
       },
       {
         "title": "Dynamics in the relationship of co-dependent and person with dependent personality disorder",
@@ -525,6 +549,12 @@ export const enContent: SiteContent = {
         ]
       },
       {
+        "title": "Cookies",
+        "body": [
+          "This website does not use cookies."
+        ]
+      },
+      {
         "title": "Liability for content",
         "body": [
           "All content on this website has been created with great care. However, no liability is assumed for the accuracy, completeness or timeliness of the content."
@@ -557,7 +587,8 @@ export const enContent: SiteContent = {
       {
         "title": "Collection and processing of data",
         "body": [
-          "Personal data is processed only to the extent necessary to provide this website and to handle enquiries made by email or phone."
+          "Personal data is processed only to the extent necessary to provide this website and to handle enquiries made by email or phone.",
+          "This website does not use cookies."
         ]
       },
       {
@@ -586,13 +617,14 @@ export const enContent: SiteContent = {
       }
     ]
   },
-"footer": {
-  "imprint": "Imprint",
-  "privacy": "Privacy",
-  "kicker": "Christine Pichlhöfer",
-  "description": "Psychotherapy in Vienna.",
-  "contactLabel": "Contact",
-  "legalLabel": "Legal",
-  "developerLabel": "Design & development"
-}
+  "footer": {
+    "imprint": "Imprint",
+    "privacy": "Privacy",
+    "cookieNotice": "This website does not use cookies.",
+    "kicker": "Christine Pichlhöfer, MSc",
+    "description": "Psychotherapy in Vienna.",
+    "contactLabel": "Contact",
+    "legalLabel": "Legal",
+    "developerLabel": "Design & development"
+  }
 }

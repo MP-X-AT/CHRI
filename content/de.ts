@@ -1,14 +1,35 @@
 import type { SiteContent } from '@/lib/types'
 
-export const deContent: SiteContent = {
+type ExtendedSiteContent = SiteContent & {
+  arbeitsweise: SiteContent['arbeitsweise'] & {
+    markersEyebrow: string
+    markersLead: string
+    stats: Array<
+      {
+        label: string
+      } & Partial<{
+        value: string
+      }>
+    >
+    globe: SiteContent['arbeitsweise']['globe'] & {
+      defaultFocusLabel: string
+      defaultFocusText: string
+    }
+  }
+  footer: SiteContent['footer'] & {
+    cookieNotice: string
+  }
+}
+
+export const deContent: ExtendedSiteContent = {
   "locale": "de",
   "meta": {
-    "title": "Christine Pichlhöfer",
+    "title": "Christine Pichlhöfer, MSc",
     "description": "Geschlechtersensible Psychotherapie, Beratung, Supervision und Coaching in Wien."
   },
   "site": {
-    "brandName": "Christine Pichlhöfer",
-    "brandSubtitle": "Psychotherapie · Psychodrama",
+    "brandName": "Christine Pichlhöfer, MSc",
+    "brandSubtitle": "Psychotherapeutin in Wien",
     "email": "psychodrama@pichlhoefer.eu",
     "phone": "0699 / 110 144 83",
     "phoneHref": "+4369911014483",
@@ -21,7 +42,7 @@ export const deContent: SiteContent = {
     "linkedinHref": "https://at.linkedin.com/in/christine-pichlh%C3%B6fer-87a94bb0",
     "developerName": "mp-x.at",
     "developerHref": "https://mp-x.at",
-    "copyright": "© Christine Pichlhöfer"
+    "copyright": "© Christine Pichlhöfer, MSc"
   },
   "header": {
     "openMenuLabel": "Menü öffnen",
@@ -58,18 +79,14 @@ export const deContent: SiteContent = {
       "kicker": "Psychotherapie in Wien",
       "title": "Raum für Klärung, Entwicklung und neue Perspektiven.",
       "displayTitle": {
-        "before": "Psychotherapie mit",
-        "highlight": "fachlicher Tiefe",
-        "after": "und persönlicher Präsenz."
+        "before": "Geschlechtersensible Psychotherapie",
+        "highlight": "Supervision und Coaching",
+        "after": "In der Methode Psychodrama, Humanistisches Cluster"
       },
-      "text": "Hier finden Sie Informationen zu meiner Arbeitsweise, zu fachlichen Schwerpunkten und zu meinem beruflichen Hintergrund in Psychotherapie, Psychodrama, Gruppendynamik und Supervision.",
+      "text": "",
       "primaryCta": "Per E-Mail Kontakt aufnehmen",
       "secondaryCta": "Zur Arbeitsweise",
-      "infoItems": [
-        "Psychodrama, Gruppendynamik und Supervision",
-        "Für Fachkolleg:innen, Schüler:innen und Klient:innen",
-        "Therapie auf Deutsch und Englisch möglich"
-      ],
+      "infoItems": [],
       "imageAlt": "Praxisraum"
     },
     "midStage": {
@@ -192,7 +209,7 @@ export const deContent: SiteContent = {
       {
         "eyebrow": "Persönliche Belastungen",
         "title": "Wenn innere Anspannung, Erschöpfung oder Krisen belasten.",
-        "text": "Psychotherapie kann unterstützen, wenn Symptome, Überforderung oder belastende Lebensphasen den Alltag einengen und neue Orientierung gebraucht wird.",
+        "text": "Psychotherapie kann unterstützen, wenn Symptome, Überforderung oder belastende Lebensphasen den Alltag einengen.",
         "itemIds": [
           "life-crises",
           "anxiety",
@@ -225,21 +242,23 @@ export const deContent: SiteContent = {
     "closingText": "Nicht nur einzelne Themen stehen im Mittelpunkt, sondern die jeweilige Lebenssituation, persönliche Ressourcen und die Frage, was im gemeinsamen Prozess hilfreich, tragfähig und verständlich werden kann."
   },
   "arbeitsweise": {
+    "markersEyebrow": "Haltung",
+    "markersLead": "Eine Arbeitsweise, die Resonanz, Würde und menschliche Vielfalt nicht als Kennzahl versteht, sondern als gelebten Raum.",
     "eyebrow": "Arbeitsweise",
     "title": "Begegnung auf Augenhöhe",
     "intro": "Im Mittelpunkt stehen die jeweilige Lebenssituation, persönliche Ressourcen und die Möglichkeit, neue Handlungsspielräume zu entwickeln.",
     "stats": [
       {
-        "value": "60+",
-        "label": "Länder und familiäre Wurzeln im Resonanzraum der Arbeit"
+        "value": "",
+        "label": "Lebensgeschichten, familiäre Wurzeln und kulturelle Kontexte, die in die gemeinsame Arbeit einfließen"
       },
       {
-        "value": "1",
-        "label": "Haltung mit viel Platz für Begegnung, Würde und Entwicklung"
+        "value": "",
+        "label": "Ein gemeinsamer Raum, in dem Begegnung, Würde und Entwicklung möglich werden"
       },
       {
-        "value": "100%",
-        "label": "Menschenzentriert, wertschätzend und nicht polarisierend"
+        "value": "",
+        "label": "Menschenzentriert, differenziert und frei von vereinfachenden Zuschreibungen"
       }
     ],
     "imageAlt": "Abstrakte Darstellung von Vielfalt, Begegnung und Verbundenheit",
@@ -264,24 +283,26 @@ export const deContent: SiteContent = {
       "Ziel in der Therapie ist es, über szenische Darstellung, Aufstellung, Symbolarbeit und Gespräch kreatives Potenzial freizusetzen und Gedanken und Gefühle erlebbar zu machen.",
       "Durch die Auseinandersetzung mit alten und neuen Rollen werden Sichtweisen erweitert beziehungsweise verändert und so Lösungen gefunden."
     ],
-    "methodInfo": "Psychotherapie ist ein Behandlungsverfahren zur Heilung oder Linderung von Störungen im seelischen Bereich, in sozialen Beziehungen, im Verhalten oder auch in bestimmten Körperfunktionen. Als Therapieerfolg kann neben einem Verschwinden der Symptomatik eine Veränderung des Erlebens, Denkens und Fühlens eintreten, wie sie sich in größerer Selbstannahme, Lebensfreude und sozialer Kompetenz ausdrücken kann.",
+    "methodInfo": "Psychotherapie ist ein Behandlungsverfahren zur Heilung oder Linderung von Störungen im seelischen Bereich, in sozialen Beziehungen, im Verhalten oder auch in bestimmten Körperfunktionen.",
     "externalLinkLabel": "Mehr über Psychodrama auf der Website der österreichischen Psychodrama-Sektion",
     "globe": {
       "eyebrow": "Resonanzraum",
       "title": "Verbunden mit vielen Teilen der Welt",
-      "intro": "Biografien, familiäre Wurzeln und persönliche Lebenswege, verbunden mit vielen Teilen der Welt und sichtbar im Resonanzraum meiner Arbeit.",
-      "interactionHintTouch": "Tippen Sie auf einen Punkt, um Nähe und Verbindungen im Resonanzraum zu erkunden.",
-      "interactionHintHover": "Bewegen Sie den Cursor über einen Punkt, um Nähe und Verbindungen im Resonanzraum zu erkunden.",
+      "intro": "Die Arbeit ist geprägt von unterschiedlichen Lebenswegen, familiären Hintergründen und kulturellen Bezügen, die im therapeutischen Prozess mitwirken.",
+      "interactionHintTouch": "Durch Berührung lassen sich Verbindungen und Nähe im Resonanzraum erkunden.",
+      "interactionHintHover": "Durch Bewegung über die Punkte werden Verbindungen und Nähe im Resonanzraum sichtbar.",
+      "defaultFocusLabel": "Resonanzraum",
+      "defaultFocusText": "Jeder Punkt steht für Lebensgeschichten, Beziehungen und Kontexte, die den therapeutischen Raum mitprägen und erweitern.",
       "activeFocusLabel": "Im Fokus",
-      "activeFocusText": "Jeder Punkt steht für Lebensgeschichten, Beziehungen und Kontexte, die den therapeutischen Resonanzraum mitprägen.",
+      "activeFocusText": "Jeder Punkt steht für Lebensgeschichten, Beziehungen und Kontexte, die den therapeutischen Raum mitprägen und erweitern.",
       "closeButton": "Fokus schließen",
       "capsules": [
-        "Biografien",
-        "Familiengeschichten",
-        "Migration",
-        "Mehrsprachigkeit",
-        "Beziehung",
-        "Resonanz"
+        "Biografische Erfahrungen",
+        "Familiäre Prägungen",
+        "Migration und Herkunft",
+        "Mehrsprachige Lebenswelten",
+        "Beziehungskontexte",
+        "Resonanzräume"
       ],
       "countryLabels": {
         "austria": "Österreich",
@@ -348,7 +369,7 @@ export const deContent: SiteContent = {
   },
   "erfahrungen": {
     "eyebrow": "Erfahrungen",
-    "title": "Langjährige Erfahrung in der psychosozialen Unterstützung und Psychotherapie",
+    "title": "Erfahrungen",
     "intro": "Bereits 1990 begann ich mit professioneller psychosozialer Unterstützung von Menschen. Seit 2003 arbeite ich zusätzlich als Psychotherapeutin in freier Praxis in Wien.",
     "items": [
       "Begleitung von Kindern, Jugendlichen und deren Familien in belastenden Lebenssituationen, New York, USA",
@@ -360,13 +381,16 @@ export const deContent: SiteContent = {
       "Zertifizierte Trainerin für Motivational Interviewing, Centre for Motivation & Change (A, I, NL)",
       "Vorträge, Workshops und Seminare national und international"
     ],
-    "qualificationsTitle": "Qualifikationen und Lehre",
+    "qualificationsTitle": "Berufliche Rollen",
     "qualifications": [
-      "Psychotherapeutin",
+      "Psychotherapeutin, geschlechter- und kultursensibel",
+      "Lehrtherapeutin und Lehrsupervision (auch für den Kinder- und Jugendbereich)",
       "Diplomierte Sozialarbeiterin",
-      "Lehrtätigkeit in der Fachsektion Psychodrama im ÖAGG",
       "Lehrbeauftragte an der Donau-Universität Krems",
-      "Referentin der Fachstelle NÖ und der SDW Wien"
+      "Referentin der Fachstelle NÖ",
+      "Referentin im Propädeutikum",
+      "Trainerin für Motivational Interviewing",
+      "Vortragende national und international (A, D, NL, USA, UA, EST)"
     ]
   },
   "publikationen": {
@@ -375,7 +399,7 @@ export const deContent: SiteContent = {
     "intro": "Ausgewählte Publikationen zu Psychodrama, Körperarbeit, Trauma, Geschlechterrollen, Prävention und gesellschaftlicher Teilhabe. Die Beiträge verbinden fachliche Reflexion, praktische Erfahrung und einen sensiblen Blick auf Beziehung, Entwicklung und soziale Wirklichkeit.",
     "items": [
       {
-        "featured": true,
+        "featured": false,
         "title": "Körperpolitik – eine Körperbeziehungsübung",
         "subtitle": "Zeitschrift für Psychodrama und Soziometrie · 2023",
         "year": "2023",
@@ -404,6 +428,7 @@ export const deContent: SiteContent = {
         "ctaLabel": "Publikation öffnen"
       },
       {
+        "featured": true,
         "title": "Interkulturelle Kompetenz in der Arbeit mit traumatisierten Menschen mit Fluchterfahrung",
         "subtitle": "Zeitschrift für Psychodrama und Soziometrie · 2021",
         "year": "2021",
@@ -457,17 +482,17 @@ export const deContent: SiteContent = {
           "Teilhabe",
           "Gesellschaft"
         ],
-        "ctaLabel": "PDF öffnen"
+        "ctaLabel": "Publikation öffnen"
       },
       {
-        "title": "Dynamik in der Beziehung von Ko-Abhängigen und abhängigen Persönlichkeitsstörungen",
+        "title": "Dynamik in der Beziehung von Co-Abhängigen und abhängigen Persönlichkeitsstörungen",
         "subtitle": "Springer",
         "year": "",
         "href": "https://link.springer.com/chapter/10.1007/978-3-531-19779-1_8#page-1",
         "summary": "Dieser Beitrag untersucht Beziehungsdynamiken zwischen ko-abhängigen Personen und Menschen mit abhängiger Persönlichkeitsstörung. Im Fokus stehen wiederkehrende Muster von Bindung, Verantwortung, Bedürftigkeit und Abgrenzung in belasteten Beziehungssystemen.",
         "tags": [
           "Beziehungsdynamik",
-          "Ko-Abhängigkeit",
+          "Co-Abhängigkeit",
           "Persönlichkeitsstörung",
           "Psychodynamik"
         ],
@@ -525,6 +550,12 @@ export const deContent: SiteContent = {
         ]
       },
       {
+        "title": "Cookies",
+        "body": [
+          "Diese Website setzt keine Cookies."
+        ]
+      },
+      {
         "title": "Haftung für Inhalte",
         "body": [
           "Alle Inhalte dieser Website wurden mit großer Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte wird jedoch keine Haftung übernommen."
@@ -557,7 +588,8 @@ export const deContent: SiteContent = {
       {
         "title": "Erhebung und Verarbeitung von Daten",
         "body": [
-          "Personenbezogene Daten werden nur verarbeitet, soweit dies zur Bereitstellung dieser Website sowie zur Bearbeitung von Anfragen per E-Mail oder Telefon erforderlich ist."
+          "Personenbezogene Daten werden nur verarbeitet, soweit dies zur Bereitstellung dieser Website sowie zur Bearbeitung von Anfragen per E-Mail oder Telefon erforderlich ist.",
+          "Diese Website setzt keine Cookies."
         ]
       },
       {
@@ -586,13 +618,14 @@ export const deContent: SiteContent = {
       }
     ]
   },
-"footer": {
-  "imprint": "Impressum",
-  "privacy": "Datenschutz",
-  "kicker": "Christine Pichlhöfer",
-  "description": "Psychotherapie in Wien.",
-  "contactLabel": "Kontakt",
-  "legalLabel": "Rechtliches",
-  "developerLabel": "Design & Entwicklung"
-}
+  "footer": {
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "cookieNotice": "Diese Website setzt keine Cookies.",
+    "kicker": "Christine Pichlhöfer, MSc",
+    "description": "Psychotherapie in Wien.",
+    "contactLabel": "Kontakt",
+    "legalLabel": "Rechtliches",
+    "developerLabel": "Design & Entwicklung"
+  }
 }

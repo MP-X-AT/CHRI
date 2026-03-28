@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getContent } from '@/lib/get-content'
 import { isLocale } from '@/lib/i18n'
@@ -6,22 +5,22 @@ import Container from '@/components/ui/container'
 import GlobalResonanceGlobe from '@/components/sections/global-resonance-globe'
 import styles from './arbeitsweise.module.css'
 
-function Stat({
+function Marker({
   value,
   label,
 }: {
-  value: string
+  value?: string
   label: string
 }) {
   return (
-    <div className={styles.stat}>
-      <div className={styles.statValue}>{value}</div>
-      <div className={styles.statLabel}>{label}</div>
-    </div>
+    <article className={styles.markerItem}>
+      <p className={styles.markerLabel}>{label}</p>
+      {value ? <p className={styles.markerMeta}>{value}</p> : null}
+    </article>
   )
 }
 
-function DetailCard({
+function Principle({
   index,
   text,
 }: {
@@ -29,13 +28,10 @@ function DetailCard({
   text: string
 }) {
   return (
-    <div className={styles.detailCard}>
-      <div className={styles.detailCardTopLine} />
-      <div className={styles.detailCardInner}>
-        <div className={styles.detailCardIndex}>{index}</div>
-        <p className={styles.detailCardText}>{text}</p>
-      </div>
-    </div>
+    <li className={styles.principleItem}>
+      <span className={styles.principleIndex}>{index}</span>
+      <p className={styles.principleText}>{text}</p>
+    </li>
   )
 }
 
@@ -51,122 +47,92 @@ export default async function ArbeitsweisePage({
   }
 
   const content = getContent(locale)
+  const arbeitsweise = content.arbeitsweise as typeof content.arbeitsweise & {
+    markersEyebrow?: string
+    markersLead?: string
+  }
 
   return (
     <section className={styles.section}>
-      <div className={styles.pageBackground}>
-        <div className={styles.pageGlowLeft} />
-        <div className={styles.pageGlowRight} />
-        <div className={styles.pageGlowCenter} />
-      </div>
-
+      <div className={styles.background} />
       <Container>
-        <div className={styles.heroCard}>
-          <div className={styles.heroDecor}>
-            <div className={styles.heroGlowTopRight} />
-            <div className={styles.heroGlowBottomLeft} />
-            <div className={styles.heroRingLeft} />
-            <div className={styles.heroRingRight} />
-            <div className={styles.heroDot} />
-          </div>
+        <div className={styles.inner}>
+          <header className={styles.hero}>
+            <div className={styles.heroLeft}>
+              <p className={styles.eyebrow}>{arbeitsweise.eyebrow}</p>
+              <h1 className={styles.title}>{arbeitsweise.title}</h1>
+              <p className={styles.intro}>{arbeitsweise.intro}</p>
+            </div>
 
-          <div className={styles.heroGrid}>
-            <div className={styles.heroContent}>
-              <p className={styles.eyebrow}>{content.arbeitsweise.eyebrow}</p>
+            <div className={styles.heroRight}>
+              <div className={styles.markersIntro}>
+                <p className={styles.markersEyebrow}>
+                  {arbeitsweise.markersEyebrow ?? arbeitsweise.eyebrow}
+                </p>
+                <p className={styles.markersLead}>
+                  {arbeitsweise.markersLead ??
+                    'A way of working grounded in resonance, dignity and human diversity.'}
+                </p>
+              </div>
 
-              <h1 className={styles.title}>{content.arbeitsweise.title}</h1>
-
-              <p className={styles.intro}>{content.arbeitsweise.intro}</p>
-
-              <div className={styles.statsGrid}>
-                {content.arbeitsweise.stats.map((stat) => (
-                  <Stat key={stat.label} value={stat.value} label={stat.label} />
+              <div className={styles.markers}>
+                {arbeitsweise.stats.map((stat) => (
+                  <Marker key={stat.label} value={'value' in stat ? stat.value : undefined} label={stat.label} />
                 ))}
               </div>
             </div>
+          </header>
 
-            <div className={styles.imageWrap}>
-              <div className={styles.imageCard}>
-                <div className={styles.imageInner}>
-                  <Image
-                    src="/images/world.png"
-                    alt={content.arbeitsweise.imageAlt}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 28rem, 28rem"
-                    className={styles.image}
-                    priority
-                  />
-                  <div className={styles.imageOverlay} />
-                  <div className={styles.imageCaption}>
-                    <p className={styles.imageKicker}>
-                      {content.arbeitsweise.imageKicker}
-                    </p>
-                    <p className={styles.imageTitle}>
-                      {content.arbeitsweise.imageTitle}
-                    </p>
-                  </div>
-                </div>
-              </div>
+          <section className={styles.methodSection}>
+            <aside className={styles.quoteColumn}>
+              <div className={styles.quoteLine} />
+              <p className={styles.quoteAuthor}>
+                {arbeitsweise.psychodramaAuthor}
+              </p>
+              <blockquote className={styles.quoteText}>
+                {arbeitsweise.psychodramaQuote}
+              </blockquote>
+            </aside>
 
-              <div className={`${styles.badgeCard} ${styles.badgeCardLeft}`}>
-                <p className={styles.badgeEyebrow}>
-                  {content.arbeitsweise.badges[0]?.eyebrow}
-                </p>
-                <p className={styles.badgeText}>
-                  {content.arbeitsweise.badges[0]?.text}
+            <div className={styles.methodColumn}>
+              <div className={styles.methodIntro}>
+                <h2 className={styles.methodTitle}>
+                  {arbeitsweise.psychodramaTitle}
+                </h2>
+                <p className={styles.methodText}>
+                  {arbeitsweise.psychodramaText}
                 </p>
               </div>
 
-              <div className={`${styles.badgeCard} ${styles.badgeCardRight}`}>
-                <p className={styles.badgeEyebrow}>
-                  {content.arbeitsweise.badges[1]?.eyebrow}
-                </p>
-                <p className={styles.badgeText}>
-                  {content.arbeitsweise.badges[1]?.text}
-                </p>
+              <div className={styles.principlesBlock}>
+                <p className={styles.sectionLabel}>Prinzipien</p>
+
+                <ol className={styles.principlesList}>
+                  {arbeitsweise.psychodramaDetails.map((item, index) => (
+                    <Principle
+                      key={item}
+                      index={String(index + 1).padStart(2, '0')}
+                      text={item}
+                    />
+                  ))}
+                </ol>
               </div>
             </div>
-          </div>
-        </div>
+          </section>
 
-        <div className={styles.contentGrid}>
-          <div className={styles.quoteCard}>
-            <div className={styles.quoteMark}>“</div>
-
-            <p className={styles.quoteText}>
-              {content.arbeitsweise.psychodramaQuote}
-            </p>
-
-            <p className={styles.quoteAuthor}>
-              {content.arbeitsweise.psychodramaAuthor}
-            </p>
-          </div>
-
-          <div className={styles.detailsCard}>
-            <div className={styles.detailsTopLine} />
-
-            <h2 className={styles.detailsTitle}>
-              {content.arbeitsweise.psychodramaTitle}
-            </h2>
-
-            <p className={styles.detailsIntro}>
-              {content.arbeitsweise.psychodramaText}
-            </p>
-
-            <div className={styles.detailsGrid}>
-              {content.arbeitsweise.psychodramaDetails.map((item, index) => (
-                <DetailCard
-                  key={item}
-                  index={String(index + 1).padStart(2, '0')}
-                  text={item}
-                />
-              ))}
+          <section className={styles.globeSection}>
+            <div className={styles.globeHeader}>
+              <p className={styles.sectionLabel}>
+                {arbeitsweise.globe.eyebrow}
+              </p>
+              <h2 className={styles.globeTitle}>{arbeitsweise.globe.title}</h2>
+              <p className={styles.globeIntro}>{arbeitsweise.globe.intro}</p>
             </div>
-          </div>
-        </div>
 
-        <div className={styles.globeWrap}>
-          <GlobalResonanceGlobe content={content.arbeitsweise.globe} />
+            <div className={styles.globeFrame}>
+              <GlobalResonanceGlobe content={arbeitsweise.globe} />
+            </div>
+          </section>
         </div>
       </Container>
     </section>
