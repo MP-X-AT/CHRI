@@ -1,0 +1,273 @@
+.section {
+  position: relative;
+  overflow: hidden;
+  padding: 4.1rem 0 4.8rem;
+  background:
+    radial-gradient(circle at top left, rgba(220, 108, 36, 0.08), transparent 28%),
+    radial-gradient(circle at 88% 12%, rgba(220, 108, 36, 0.04), transparent 18%),
+    linear-gradient(180deg, #fbf8f4 0%, #f5efe8 100%);
+}
+
+@media (min-width: 640px) {
+  .section {
+    padding: 4.8rem 0 5.5rem;
+  }
+}
+
+.background {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+
+.backgroundGlowLeft {
+  position: absolute;
+  left: 7%;
+  top: 7%;
+  height: 10rem;
+  width: 10rem;
+  border-radius: 9999px;
+  background: rgba(220, 108, 36, 0.08);
+  filter: blur(52px);
+}
+
+.backgroundGlowRight {
+  position: absolute;
+  right: 9%;
+  top: 11%;
+  height: 11rem;
+  width: 11rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.22);
+  filter: blur(52px);
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  max-width: 42rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+}
+
+.intro {
+  margin: 0.95rem 0 0;
+  max-width: 36rem;
+  font-size: clamp(1.22rem, 2vw, 1.68rem);
+  font-weight: 350;
+  line-height: 1.5;
+  letter-spacing: -0.028em;
+  color: var(--foreground);
+  text-wrap: balance;
+}
+
+.panelGrid {
+  margin-top: 1.9rem;
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .panelGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem;
+  }
+}
+
+.panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  padding: 1.2rem 1.2rem 1.25rem;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+@media (min-width: 640px) {
+  .panel {
+    padding: 1.35rem 1.35rem 1.4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .panel {
+    padding: 1.45rem 1.45rem 1.5rem;
+  }
+}
+
+.panel:hover {
+  transform: translateY(-2px);
+}
+
+.panelWarm {
+  background:
+    linear-gradient(180deg, rgba(255, 249, 244, 0.95), rgba(255, 242, 233, 0.84));
+  border: 1px solid rgba(220, 108, 36, 0.14);
+  box-shadow:
+    0 12px 30px rgba(220, 108, 36, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+.panelNeutral {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.62));
+  border: 1px solid rgba(78, 58, 42, 0.08);
+  box-shadow:
+    0 12px 28px rgba(45, 33, 27, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+.panelInner {
+  position: relative;
+}
+
+.panelEyebrow {
+  margin: 0;
+  font-size: 0.67rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: rgba(188, 112, 56, 0.92);
+}
+
+.panelTitle {
+  margin: 0.62rem 0 0;
+  max-width: 22ch;
+  font-size: 1.22rem;
+  font-weight: 390;
+  line-height: 1.22;
+  letter-spacing: -0.022em;
+  color: var(--foreground);
+  text-wrap: balance;
+}
+
+@media (min-width: 640px) {
+  .panelTitle {
+    font-size: 1.45rem;
+  }
+}
+
+.panelText {
+  margin: 0.8rem 0 0;
+  max-width: 32rem;
+  font-size: 0.95rem;
+  line-height: 1.66;
+  color: var(--muted-foreground);
+}
+
+.panelTopics {
+  margin-top: 1rem;
+  padding-top: 0.95rem;
+  border-top: 1px solid rgba(78, 58, 42, 0.07);
+}
+
+.topicList {
+  display: grid;
+  gap: 0.62rem;
+}
+
+.topicItem {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.62rem;
+  align-items: start;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--foreground);
+}
+
+.topicDot {
+  display: block;
+  width: 0.36rem;
+  height: 0.36rem;
+  margin-top: 0.54rem;
+  border-radius: 9999px;
+  background: rgba(220, 108, 36, 0.6);
+  flex-shrink: 0;
+}
+
+.infoGrid {
+  margin-top: 1.15rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+@media (min-width: 1024px) {
+  .infoGrid {
+    grid-template-columns: 0.95fr 1.05fr;
+  }
+}
+
+.settingCard,
+.noteCard {
+  border-radius: 1.35rem;
+  padding: 1.1rem 1.15rem 1.15rem;
+  backdrop-filter: blur(10px);
+}
+
+.settingCard {
+  border: 1px solid rgba(78, 58, 42, 0.08);
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow:
+    0 10px 24px rgba(45, 33, 27, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.62);
+}
+
+.noteCard {
+  border: 1px solid rgba(220, 108, 36, 0.12);
+  background:
+    linear-gradient(180deg, rgba(252, 248, 243, 0.92), rgba(247, 240, 232, 0.88));
+  box-shadow:
+    0 10px 24px rgba(220, 108, 36, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.56);
+}
+
+.infoLabel {
+  margin: 0;
+  font-size: 0.67rem;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(188, 112, 56, 0.92);
+}
+
+.settingText {
+  margin: 0.62rem 0 0;
+  font-size: 1rem;
+  font-weight: 450;
+  line-height: 1.55;
+  color: var(--foreground);
+}
+
+.noteText {
+  margin: 0.62rem 0 0;
+  font-size: 0.94rem;
+  line-height: 1.62;
+  color: var(--foreground);
+}
+
+.closingWrap {
+  margin-top: 1.15rem;
+  max-width: 42rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(78, 58, 42, 0.08);
+}
+
+.closingText {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}

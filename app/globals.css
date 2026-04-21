@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8efe5;
+  --foreground: #2d211b;
+  --muted-foreground: #6d5c50;
+  --accent: #dc6c24;
+  --selection: rgba(220, 108, 36, 0.18);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background:
+    linear-gradient(rgba(250, 242, 232, 0.82), rgba(248, 241, 234, 0.86)),
+    radial-gradient(circle at 8% 10%, rgba(255, 179, 111, 0.18), transparent 24%),
+    radial-gradient(circle at 86% 12%, rgba(122, 191, 255, 0.16), transparent 22%),
+    radial-gradient(circle at 22% 82%, rgba(255, 153, 193, 0.1), transparent 20%),
+    radial-gradient(circle at 82% 78%, rgba(137, 228, 203, 0.12), transparent 18%),
+    radial-gradient(circle at 48% 92%, rgba(186, 150, 255, 0.1), transparent 20%),
+    linear-gradient(180deg, #fff2e6 0%, #f8f3ec 36%, #f4f8fc 70%, #f2f7ff 100%);
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-attachment: fixed, fixed, fixed, scroll, scroll, scroll, scroll;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background:
+    radial-gradient(circle at 16% 18%, rgba(255, 255, 255, 0.34), transparent 16%),
+    radial-gradient(circle at 78% 26%, rgba(255, 255, 255, 0.28), transparent 14%),
+    radial-gradient(circle at 32% 74%, rgba(255, 255, 255, 0.2), transparent 12%),
+    radial-gradient(circle at 68% 82%, rgba(255, 255, 255, 0.14), transparent 10%);
+  mix-blend-mode: soft-light;
+}
+
+::selection {
+  background: var(--selection);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid rgba(220, 108, 36, 0.4);
+  outline-offset: 2px;
+  border-radius: 0.75rem;
+}

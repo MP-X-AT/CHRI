@@ -1,0 +1,346 @@
+.section {
+  position: relative;
+  overflow: hidden;
+  padding: 2.5rem 0 5.5rem;
+}
+
+@media (min-width: 640px) {
+  .section {
+    padding: 3rem 0 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding: 3.25rem 0 6.5rem;
+  }
+}
+
+.background {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(220, 108, 36, 0.035), transparent 24%),
+    radial-gradient(circle at 82% 42%, rgba(120, 190, 255, 0.03), transparent 22%);
+}
+
+.inner {
+  border-top: 1px solid rgba(18, 18, 18, 0.08);
+  padding-top: 1.4rem;
+}
+
+.hero {
+  display: grid;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    grid-template-columns: minmax(0, 0.56fr) minmax(0, 0.44fr);
+    gap: 2.5rem;
+  }
+}
+
+.heroLeft {
+  min-width: 0;
+}
+
+.heroRight {
+  min-width: 0;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+}
+
+.title {
+  margin-top: 0.7rem;
+  max-width: 8.5ch;
+  font-size: 2.35rem;
+  line-height: 0.98;
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .title {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .title {
+    font-size: 3.6rem;
+  }
+}
+
+.intro {
+  margin-top: 1rem;
+  max-width: 34rem;
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: var(--muted-foreground);
+}
+
+@media (min-width: 640px) {
+  .intro {
+    font-size: 1.02rem;
+  }
+}
+
+.markersIntro {
+  max-width: 28rem;
+}
+
+.markersEyebrow {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: rgba(18, 18, 18, 0.42);
+}
+
+.markersLead {
+  margin-top: 0.55rem;
+  font-size: 0.96rem;
+  line-height: 1.8;
+  color: var(--muted-foreground);
+}
+
+.markers {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 640px) {
+  .markers {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .markers {
+    margin-top: 1.25rem;
+  }
+}
+
+.markerItem {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.85rem;
+  border: 1px solid rgba(18, 18, 18, 0.08);
+  border-radius: 1.4rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(255, 249, 243, 0.36));
+  padding: 1rem 1rem 0.95rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 12px 30px rgba(28, 28, 28, 0.035);
+}
+
+.markerLabel {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--foreground);
+  text-wrap: balance;
+}
+
+.markerMeta {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(18, 18, 18, 0.42);
+}
+
+.methodSection {
+  display: grid;
+  gap: 2.5rem;
+  padding-top: 2.4rem;
+}
+
+@media (min-width: 1024px) {
+  .methodSection {
+    grid-template-columns: minmax(0, 0.36fr) minmax(0, 0.64fr);
+    gap: 3rem;
+  }
+}
+
+.quoteColumn {
+  min-width: 0;
+}
+
+.quoteLine {
+  width: 3rem;
+  height: 1px;
+  background: rgba(220, 108, 36, 0.42);
+}
+
+.quoteAuthor {
+  margin-top: 0.95rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+}
+
+.quoteText {
+  margin-top: 1.1rem;
+  max-width: 20rem;
+  font-size: 1.65rem;
+  line-height: 1.42;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .quoteText {
+    font-size: 1.95rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .quoteText {
+    font-size: 2.15rem;
+  }
+}
+
+.methodColumn {
+  min-width: 0;
+}
+
+.methodIntro {
+  border-top: 1px solid rgba(18, 18, 18, 0.08);
+  padding-top: 1rem;
+}
+
+.methodTitle {
+  font-size: 1.2rem;
+  line-height: 1.22;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+.methodText {
+  margin-top: 1rem;
+  max-width: 44rem;
+  font-size: 0.98rem;
+  line-height: 1.9;
+  color: var(--muted-foreground);
+}
+
+.principlesBlock {
+  margin-top: 1.6rem;
+}
+
+.sectionLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+}
+
+.principlesList {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  border-top: 1px solid rgba(18, 18, 18, 0.08);
+}
+
+.principleItem {
+  display: grid;
+  grid-template-columns: 2.8rem 1fr;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(18, 18, 18, 0.08);
+}
+
+.principleIndex {
+  padding-top: 0.08rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(18, 18, 18, 0.42);
+}
+
+.principleText {
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: var(--foreground);
+}
+
+.globeSection {
+  padding-top: 2.8rem;
+}
+
+.globeHeader {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 42rem;
+  padding-top: 0.2rem;
+}
+
+.globeTitle {
+  font-size: 1.55rem;
+  line-height: 1.16;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  color: var(--foreground);
+}
+
+@media (min-width: 640px) {
+  .globeTitle {
+    font-size: 1.9rem;
+  }
+}
+
+.globeIntro {
+  max-width: 42rem;
+  font-size: 0.98rem;
+  line-height: 1.85;
+  color: var(--muted-foreground);
+}
+
+.globeFrame {
+  margin-top: 1.25rem;
+}
+
+.globeFrame :global(section) {
+  border-radius: 2rem !important;
+  box-shadow:
+    0 22px 56px rgba(28, 28, 28, 0.07),
+    0 1px 0 rgba(255, 255, 255, 0.55) inset !important;
+}
+
+@media (max-width: 639px) {
+  .markerItem {
+    border-radius: 1.2rem;
+    padding: 0.95rem 0.95rem 0.9rem;
+  }
+
+  .markerLabel {
+    font-size: 0.92rem;
+    line-height: 1.68;
+  }
+
+  .markersLead,
+  .globeIntro,
+  .methodText,
+  .principleText,
+  .intro {
+    text-wrap: pretty;
+  }
+}

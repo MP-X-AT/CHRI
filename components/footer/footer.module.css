@@ -1,0 +1,148 @@
+.footer {
+  margin-top: 3rem;
+  padding: 1.5rem 0 0.85rem;
+  border-top: 1px solid rgba(110, 86, 62, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(248, 243, 237, 0.96) 0%,
+    rgba(244, 238, 231, 0.98) 100%
+  );
+}
+
+.footerTop {
+  display: grid;
+  gap: 1.15rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .footerTop {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2rem;
+  }
+}
+
+.brandBlock {
+  max-width: 30rem;
+}
+
+.brandRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.brandLine {
+  display: inline-block;
+  width: 2rem;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(188, 112, 56, 0.18),
+    rgba(188, 112, 56, 0.9)
+  );
+  flex-shrink: 0;
+}
+
+.brandName {
+  margin: 0;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 380;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: rgba(34, 26, 20, 0.96);
+  text-wrap: balance;
+}
+
+.brandClaim {
+  margin: 0.45rem 0 0;
+  margin-left: calc(2rem + 0.85rem);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(78, 61, 46, 0.74);
+}
+
+.legalBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+@media (min-width: 768px) {
+  .legalBlock {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+.legalNav {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.legalInfo {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(78, 61, 46, 0.74);
+}
+
+.navDot {
+  width: 0.22rem;
+  height: 0.22rem;
+  border-radius: 9999px;
+  background: rgba(188, 112, 56, 0.55);
+  flex-shrink: 0;
+}
+
+.footerLink,
+.footerLinkSubtle {
+  text-decoration: none;
+  transition:
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+.footerLink {
+  font-size: 0.92rem;
+  color: rgba(34, 26, 20, 0.88);
+}
+
+.footerLink:hover {
+  color: rgba(188, 112, 56, 1);
+}
+
+.footerBottom {
+  margin-top: 0.95rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(110, 86, 62, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+@media (min-width: 640px) {
+  .footerBottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}
+
+.bottomText {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: rgba(98, 75, 54, 0.62);
+}
+
+.footerLinkSubtle {
+  color: rgba(34, 26, 20, 0.78);
+}
+
+.footerLinkSubtle:hover {
+  color: rgba(188, 112, 56, 1);
+}
