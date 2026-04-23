@@ -717,7 +717,7 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
             {activeCountry ? (
               <button
                 type="button"
-                onClick={() => handleMobileSelection(null)}
+                onClick={() => setActiveCountry(null)}
                 className="inline-flex w-fit items-center rounded-full border border-white/70 bg-white/82 px-3.5 py-2 text-xs font-medium text-[var(--foreground)]/75 transition hover:bg-white"
               >
                 {globeContent.closeButton}
