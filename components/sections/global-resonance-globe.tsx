@@ -15,7 +15,7 @@ const GlobalResonanceGlobeInner = dynamic(
           <div className="mt-4 h-4 w-full max-w-[28rem] rounded-full bg-white/45" />
           <div className="mt-3 h-4 w-full max-w-[24rem] rounded-full bg-white/38" />
         </div>
-        <div className="mt-6 h-[26rem] rounded-[1.6rem] border border-white/60 bg-white/24 sm:h-[30rem] lg:h-[34rem]" />
+        <div className="mt-6 h-[16rem] rounded-[1.6rem] border border-white/60 bg-white/24 sm:h-[30rem] lg:h-[34rem]" />
       </section>
     ),
   }
@@ -58,7 +58,7 @@ export default function GlobalResonanceGlobe({
             <div className="mt-4 h-4 w-full max-w-[28rem] rounded-full bg-white/45" />
             <div className="mt-3 h-4 w-full max-w-[24rem] rounded-full bg-white/38" />
           </div>
-          <div className="mt-6 h-[26rem] rounded-[1.6rem] border border-white/60 bg-white/24 sm:h-[30rem] lg:h-[34rem]" />
+          <div className="mt-6 h-[16rem] rounded-[1.6rem] border border-white/60 bg-white/24 sm:h-[30rem] lg:h-[34rem]" />
         </section>
       )}
     </div>

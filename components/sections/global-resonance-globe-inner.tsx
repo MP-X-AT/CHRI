@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Globe from 'react-globe.gl'
 import type { GlobeMethods } from 'react-globe.gl'
-import { X } from 'lucide-react'
 import * as THREE from 'three'
 import { feature } from 'topojson-client'
 import type { FeatureCollection, Geometry } from 'geojson'
@@ -120,10 +119,16 @@ const MOBILE_FEATURED_NODE_IDS = [
   'egypt',
 ] as const
 
-const MOBILE_RESUME_DELAY_MS = 4200
 const MOBILE_FEATURED_NODES = MOBILE_FEATURED_NODE_IDS.map((id) =>
   COUNTRY_NODES.find((node) => node.id === id)
 ).filter(Boolean) as CountryNode[]
+const MOBILE_LAND_PALETTE = [
+  'rgba(255, 176, 96, 0.56)',
+  'rgba(102, 204, 255, 0.48)',
+  'rgba(94, 228, 188, 0.42)',
+  'rgba(184, 143, 255, 0.44)',
+  'rgba(255, 132, 186, 0.38)',
+]
 
 function hashString(value: string) {
   let hash = 0
@@ -170,6 +175,16 @@ function landColorForFeature(featureItem: PolygonFeature) {
   return LAND_PALETTE[hashString(seed) % LAND_PALETTE.length]
 }
 
+function mobileLandColorForFeature(featureItem: PolygonFeature) {
+  const seed =
+    featureItem.properties?.NAME ??
+    featureItem.properties?.name ??
+    featureItem.properties?.ADMIN ??
+    'land'
+
+  return MOBILE_LAND_PALETTE[hashString(seed) % MOBILE_LAND_PALETTE.length]
+}
+
 function findNearestConnections(
   active: CountryNode,
   nodes: CountryNode[],
@@ -201,7 +216,6 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
   const globeContent = content as GlobeContent
   const globeRef = useRef<GlobeMethods | undefined>(undefined)
   const globeWrapRef = useRef<HTMLDivElement | null>(null)
-  const mobileResumeRef = useRef<number | null>(null)
 
   const [activeCountry, setActiveCountry] = useState<CountryNode | null>(null)
   const [hoveredCountry, setHoveredCountry] = useState<CountryNode | null>(null)
@@ -210,8 +224,7 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
   const [globeSize, setGlobeSize] = useState({ width: 0, height: 0 })
   const [isVisible, setIsVisible] = useState(true)
-  const [showAllMobileNodes, setShowAllMobileNodes] = useState(false)
-  const [isTouchRotationPaused, setIsTouchRotationPaused] = useState(false)
+  const isCompactMobile = isMobile && isTouchDevice
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -250,12 +263,14 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
       const width = entry.contentRect.width
 
       let height = width * 0.92
-      if (width < 480) height = width * 1.02
-      else if (width < 768) height = width * 0.92
+      if (width < 480) height = width * 0.72
+      else if (width < 768) height = width * 0.68
       else if (width < 1100) height = width * 0.88
       else height = width * 0.84
 
-      const clampedHeight = Math.max(360, Math.min(height, 820))
+      const minHeight = width < 768 ? 250 : 360
+      const maxHeight = width < 768 ? 340 : 820
+      const clampedHeight = Math.max(minHeight, Math.min(height, maxHeight))
 
       setGlobeSize({
         width,
@@ -284,7 +299,9 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
     return () => observer.disconnect()
   }, [])
 
-  const focusedCountry = isTouchDevice
+  const focusedCountry = isCompactMobile
+    ? null
+    : isTouchDevice
     ? activeCountry
     : hoveredCountry ?? activeCountry
 
@@ -310,85 +327,10 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
     return material
   }, [isMobile])
 
-  useEffect(() => {
-    return () => {
-      if (mobileResumeRef.current) {
-        window.clearTimeout(mobileResumeRef.current)
-      }
-    }
-  }, [])
-
-  const scheduleMobileRotationResume = () => {
-    if (typeof window === 'undefined') return
-    if (mobileResumeRef.current) {
-      window.clearTimeout(mobileResumeRef.current)
-    }
-
-    mobileResumeRef.current = window.setTimeout(() => {
-      setIsTouchRotationPaused(false)
-      mobileResumeRef.current = null
-    }, MOBILE_RESUME_DELAY_MS)
-  }
-
-  const pauseMobileRotation = (persistWhileFocused = false) => {
-    if (!isTouchDevice) return
-    setIsTouchRotationPaused(true)
-
-    if (persistWhileFocused) {
-      if (mobileResumeRef.current) {
-        window.clearTimeout(mobileResumeRef.current)
-        mobileResumeRef.current = null
-      }
-      return
-    }
-
-    scheduleMobileRotationResume()
-  }
-
-  const handleMobileSelection = (country: CountryNode | null) => {
-    setActiveCountry(country)
-
-    if (!isTouchDevice) return
-
-    if (country) {
-      pauseMobileRotation(true)
-      return
-    }
-
-    scheduleMobileRotationResume()
-  }
-
-  const handleMobileNodeVisibilityToggle = () => {
-    setShowAllMobileNodes((current) => {
-      const next = !current
-
-      if (!next && activeCountry) {
-        const isFeatured = MOBILE_FEATURED_NODES.some(
-          (node) => node.id === activeCountry.id
-        )
-
-        if (!isFeatured) {
-          handleMobileSelection(null)
-        }
-      }
-
-      return next
-    })
-  }
-
   const visibleNodes = useMemo(() => {
-    if (!isMobile) return COUNTRY_NODES
-    return showAllMobileNodes ? COUNTRY_NODES : MOBILE_FEATURED_NODES
-  }, [isMobile, showAllMobileNodes])
-
-  const chipNodes = useMemo(
-    () => (isMobile ? visibleNodes : MOBILE_FEATURED_NODES),
-    [isMobile, visibleNodes]
-  )
-
-  const activeCountryLabel = activeCountry
-    ? globeContent.countryLabels[activeCountry.id] ?? activeCountry.id
-    : null
+    if (!isCompactMobile) return COUNTRY_NODES
+    return MOBILE_FEATURED_NODES
+  }, [isCompactMobile])
 
   useEffect(() => {
     if (!globeRef.current) return
@@ -397,10 +339,12 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
     controls.autoRotate =
       isVisible &&
       !prefersReducedMotion &&
-      !(isTouchDevice && (isTouchRotationPaused || Boolean(activeCountry)))
+      !(isTouchDevice && !isCompactMobile && Boolean(activeCountry))
     controls.autoRotateSpeed = prefersReducedMotion
       ? 0
-      : focusedCountry
+      : isCompactMobile
+        ? 0.009
+        : focusedCountry
         ? isMobile
           ? 0.003
           : 0.006
@@ -409,11 +353,12 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
           : 0.05
 
     controls.enablePan = false
+    controls.enableZoom = false
     controls.enableDamping = true
-    controls.dampingFactor = isMobile ? 0.14 : 0.1
-    controls.rotateSpeed = isMobile ? 0.38 : 0.5
-    controls.minDistance = isMobile ? 210 : 180
-    controls.maxDistance = isMobile ? 430 : 400
+    controls.dampingFactor = isCompactMobile ? 0.08 : isMobile ? 0.14 : 0.1
+    controls.rotateSpeed = isCompactMobile ? 0.24 : isMobile ? 0.38 : 0.5
+    controls.minDistance = isCompactMobile ? 250 : isMobile ? 210 : 180
+    controls.maxDistance = isCompactMobile ? 250 : isMobile ? 430 : 400
 
     const lights = (globeRef.current.lights?.() ?? []) as LightLike[]
     const directionalLight = lights.find((obj) => obj?.type === 'DirectionalLight')
@@ -421,26 +366,38 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
 
     if (directionalLight?.position) {
       directionalLight.position.set(2, 1.35, 1.25)
-      directionalLight.intensity = isMobile ? 1.6 : 2
+      directionalLight.intensity = isCompactMobile ? 1.36 : isMobile ? 1.6 : 2
       directionalLight.color = new THREE.Color('#fff9f1')
     }
 
     if (ambientLight) {
-      ambientLight.intensity = isMobile ? 1.04 : 1.22
+      ambientLight.intensity = isCompactMobile ? 1.12 : isMobile ? 1.04 : 1.22
       ambientLight.color = new THREE.Color('#fffcf7')
     }
   }, [
     activeCountry,
     focusedCountry,
+    isCompactMobile,
     isMobile,
     isTouchDevice,
-    isTouchRotationPaused,
     isVisible,
     prefersReducedMotion,
   ])
 
   useEffect(() => {
     if (!globeRef.current) return
+
+    if (isCompactMobile) {
+      globeRef.current.pointOfView(
+        {
+          lat: 16,
+          lng: 18,
+          altitude: 1.42,
+        },
+        prefersReducedMotion ? 0 : 1100
+      )
+      return
+    }
 
     if (hoveredCountry && !isTouchDevice) {
       globeRef.current.pointOfView(
@@ -474,10 +431,17 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
       },
       prefersReducedMotion ? 0 : 1300
     )
-  }, [hoveredCountry, activeCountry, isTouchDevice, isMobile, prefersReducedMotion])
+  }, [
+    hoveredCountry,
+    activeCountry,
+    isCompactMobile,
+    isTouchDevice,
+    isMobile,
+    prefersReducedMotion,
+  ])
 
   const ambientArcs = useMemo(() => {
-    if (isMobile) return []
+    if (isCompactMobile || isMobile) return []
 
     return AMBIENT_LINKS.map(([fromId, toId], index) => {
       const from = COUNTRY_NODES.find((node) => node.id === fromId)
@@ -508,10 +472,10 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
         ),
       }
     }).filter(Boolean) as ArcItem[]
-  }, [isMobile])
+  }, [isCompactMobile, isMobile])
 
   const focusArcs = useMemo(() => {
-    if (!focusedCountry || isMobile) return []
+    if (!focusedCountry || isCompactMobile || isMobile) return []
 
     return findNearestConnections(focusedCountry, COUNTRY_NODES, 3).map(
       (node, index) => ({
@@ -535,7 +499,7 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
         ),
       })
     )
-  }, [focusedCountry, isMobile])
+  }, [focusedCountry, isCompactMobile, isMobile])
 
   const allArcs = useMemo(
     () => [...ambientArcs, ...focusArcs],
@@ -543,26 +507,7 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
   )
 
   const htmlNodes = useMemo<HtmlNode[]>(() => {
-    if (isMobile) {
-      if (!activeCountry) return []
-
-      return [
-        {
-          ...activeCountry,
-          kind: 'halo',
-        },
-        {
-          ...activeCountry,
-          kind: 'country',
-          isHovered: false,
-          isActive: true,
-          glowClass: glowClassForCountry(activeCountry.id),
-          pulseDuration: pulseDurationForCountry(activeCountry.id),
-          pulseDelay: pulseDelayForCountry(activeCountry.id),
-          labelSize: labelSizeForCountry(activeCountry.size),
-        },
-      ]
-    }
+    if (isCompactMobile) return []
 
     const baseNodes: HtmlNode[] = COUNTRY_NODES.map((node) => ({
       ...node,
@@ -583,7 +528,7 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
     }
 
     return baseNodes
-  }, [hoveredCountry, activeCountry, focusedCountry, isMobile])
+  }, [hoveredCountry, activeCountry, focusedCountry, isCompactMobile])
 
   const capsuleLimit = isMobile ? 3 : 4
 
@@ -598,10 +543,27 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
       <div className="relative z-10 grid gap-4 lg:grid-cols-[minmax(0,1.05fr)_minmax(18rem,0.42fr)] lg:items-stretch lg:gap-5">
         <div
           ref={globeWrapRef}
-          onPointerDown={() => pauseMobileRotation(false)}
-          className="relative min-h-[22rem] overflow-hidden rounded-[1.7rem] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.08))] sm:min-h-[30rem] lg:min-h-[36rem]"
+          className={`relative min-h-[16rem] overflow-hidden sm:min-h-[30rem] lg:min-h-[36rem] ${
+            isCompactMobile
+              ? 'rounded-[1.45rem] border-none bg-transparent'
+              : 'rounded-[1.7rem] border border-white/60 bg-[linear-gradient(180deg,rgba(255,255,255,0.18),rgba(255,255,255,0.08))]'
+          }`}
         >
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_24%_22%,rgba(255,196,146,0.18),transparent_26%),radial-gradient(circle_at_72%_18%,rgba(168,218,255,0.14),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.18),rgba(244,248,255,0.12))]" />
+          <div
+            className={`pointer-events-none absolute inset-0 ${
+              isCompactMobile
+                ? 'bg-transparent'
+                : 'bg-[radial-gradient(circle_at_24%_22%,rgba(255,196,146,0.18),transparent_26%),radial-gradient(circle_at_72%_18%,rgba(168,218,255,0.14),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.18),rgba(244,248,255,0.12))]'
+            }`}
+          />
+          {isCompactMobile ? (
+            <div className={styles.mobilePoeticAura} aria-hidden="true">
+              <div className={`${styles.mobileAuraBlob} ${styles.mobileAuraSun}`} />
+              <div className={`${styles.mobileAuraBlob} ${styles.mobileAuraSky}`} />
+              <div className={`${styles.mobileAuraBlob} ${styles.mobileAuraMint}`} />
+              <div className={`${styles.mobileAuraBlob} ${styles.mobileAuraRose}`} />
+            </div>
+          ) : null}
           {globeSize.width > 0 && (
             <Globe
               ref={globeRef}
@@ -611,25 +573,46 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
               globeMaterial={globeMaterial}
               globeImageUrl={isMobile ? undefined : '/globe/earth-blue-marble.jpg'}
               bumpImageUrl={isMobile ? undefined : '/globe/earth-topology.png'}
-              atmosphereColor="#ffd7ac"
-              atmosphereAltitude={isMobile ? 0.18 : 0.24}
+              atmosphereColor={isCompactMobile ? '#ffbc86' : '#ffd7ac'}
+              atmosphereAltitude={isCompactMobile ? 0.17 : isMobile ? 0.18 : 0.24}
               polygonsData={countries}
               polygonCapColor={(featureItem: object) =>
-                landColorForFeature(featureItem as PolygonFeature)
+                isCompactMobile
+                  ? mobileLandColorForFeature(featureItem as PolygonFeature)
+                  : landColorForFeature(featureItem as PolygonFeature)
               }
-              polygonSideColor={() => 'rgba(255,255,255,0.06)'}
-              polygonStrokeColor={() => 'rgba(255,255,255,0.16)'}
-              polygonAltitude={() => (isMobile ? 0.004 : 0.006)}
+              polygonSideColor={() =>
+                isCompactMobile
+                  ? 'rgba(255,255,255,0.04)'
+                  : 'rgba(255,255,255,0.06)'
+              }
+              polygonStrokeColor={() =>
+                isCompactMobile
+                  ? 'rgba(255,246,238,0.14)'
+                  : 'rgba(255,255,255,0.16)'
+              }
+              polygonAltitude={() => (isCompactMobile ? 0.0032 : isMobile ? 0.004 : 0.006)}
               pointsData={visibleNodes}
               pointLat="lat"
               pointLng="lng"
-              pointColor={() => 'rgba(255,255,255,0.02)'}
+              pointColor={(item: object) => {
+                const node = item as CountryNode
+
+                if (isCompactMobile) {
+                  if (node.size === 'lg') return 'rgba(255, 238, 195, 0.98)'
+                  if (node.size === 'md') return 'rgba(161, 231, 255, 0.94)'
+                  return 'rgba(251, 220, 255, 0.82)'
+                }
+
+                return 'rgba(255,255,255,0.02)'
+              }}
               pointLabel={() => ''}
               polygonLabel={() => ''}
-              pointAltitude={isMobile ? 0.014 : 0.016}
+              pointAltitude={isCompactMobile ? 0.008 : isMobile ? 0.014 : 0.016}
               pointRadius={(item: object) => {
                 const node = item as CountryNode
                 const base = pointHitRadius(node.size)
+                if (isCompactMobile) return base * 0.76
                 const touchBoost = isTouchDevice ? 1.38 : 1
                 const isHovered = !isTouchDevice && hoveredCountry?.id === node.id
                 const isActive = activeCountry?.id === node.id
@@ -638,17 +621,16 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
                 if (isActive) return base * 1.5 * touchBoost
                 return base * touchBoost
               }}
-              pointsMerge={false}
+              pointsMerge={isCompactMobile}
               onPointHover={(point: object | null) => {
-                if (isTouchDevice) return
+                if (isTouchDevice || isCompactMobile) return
                 setHoveredCountry(point ? (point as CountryNode) : null)
               }}
               onPointClick={(point: object | null) => {
+                if (isCompactMobile) return
                 if (!point) return
                 const item = point as CountryNode
-                handleMobileSelection(
-                  activeCountry?.id === item.id ? null : item
-                )
+                setActiveCountry((current) => (current?.id === item.id ? null : item))
               }}
               arcsData={allArcs}
               arcColor={(item: object) => (item as ArcItem).color}
@@ -697,75 +679,13 @@ export default function GlobalResonanceGlobeInner({ content }: Props) {
               }}
             />
           )}
-          {isMobile ? (
-            <div className={styles.mobileGlobeToolbar}>
-              <p className={styles.mobileGlobeHint}>{helperHint}</p>
-
-              <div className={styles.mobileChipScroller} aria-label={helperTitle}>
-                {chipNodes.map((node) => {
-                  const isSelected = activeCountry?.id === node.id
-
-                  return (
-                    <button
-                      key={node.id}
-                      type="button"
-                      onClick={() => handleMobileSelection(node)}
-                      className={`${styles.mobileChip} ${
-                        isSelected ? styles.mobileChipActive : ''
-                      }`}
-                    >
-                      {globeContent.countryLabels[node.id] ?? node.id}
-                    </button>
-                  )
-                })}
-              </div>
-
-              <button
-                type="button"
-                onClick={handleMobileNodeVisibilityToggle}
-                className={styles.mobileToggle}
-              >
-                {showAllMobileNodes
-                  ? globeContent.showFeaturedButton
-                  : globeContent.showAllButton}
-              </button>
-            </div>
-          ) : null}
-          {isMobile && activeCountry ? (
-            <div
-              className={styles.mobileBottomSheet}
-              onPointerDown={() => pauseMobileRotation(true)}
-            >
-              <div className={styles.mobileSheetHandle} />
-              <div className={styles.mobileSheetHeader}>
-                <div>
-                  <p className={styles.mobileSheetEyebrow}>
-                    {globeContent.activeFocusLabel}
-                  </p>
-                  <h3 className={styles.mobileSheetTitle}>{activeCountryLabel}</h3>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => handleMobileSelection(null)}
-                  className={styles.mobileSheetClose}
-                  aria-label={globeContent.closeButton}
-                >
-                  <X size={16} strokeWidth={1.8} />
-                </button>
-              </div>
-
-              <p className={styles.mobileSheetText}>{helperText}</p>
-
-              <div className={styles.mobileCapsules}>
-                {globeContent.capsules.slice(0, capsuleLimit).map((capsule) => (
-                  <span key={capsule} className={styles.mobileCapsule}>
-                    {capsule}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ) : null}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(244,248,255,0.88)] via-[rgba(244,248,255,0.28)] to-transparent sm:h-32" />
+          <div
+            className={`pointer-events-none absolute inset-x-0 bottom-0 ${
+              isCompactMobile
+                ? 'h-10 bg-gradient-to-t from-[rgba(244,248,255,0.3)] via-[rgba(244,248,255,0.08)] to-transparent'
+                : 'h-16 bg-gradient-to-t from-[rgba(244,248,255,0.88)] via-[rgba(244,248,255,0.28)] to-transparent sm:h-32'
+            }`}
+          />
         </div>
 
         <aside className="relative hidden flex-col justify-between rounded-[1.55rem] border border-white/70 bg-white/62 p-4 shadow-[0_14px_42px_rgba(80,90,120,0.08)] backdrop-blur-md sm:p-5 lg:flex">
